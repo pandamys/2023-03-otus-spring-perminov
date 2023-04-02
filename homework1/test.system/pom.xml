@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ru.otus</groupId>
+  <artifactId>test.system</artifactId>
+  <packaging>jar</packaging>
+  <version>0.0.1</version>
+  <name>System for testing</name>
+  <url>http://maven.apache.org</url>
+
+    <properties>
+        <spring.version>6.0.7</spring.version>
+        <junit.version>4.13.2</junit.version>
+    </properties>
+
+
+  <dependencies>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context</artifactId>
+          <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>${junit.version}</version>
+          <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <finalName>test.system</finalName>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <configuration>
+                  <source>9</source>
+                  <target>9</target>
+              </configuration>
+          </plugin>
+      </plugins>
+  </build>
+</project>
