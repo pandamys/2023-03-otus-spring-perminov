@@ -1,11 +1,34 @@
 package ru.otus.test.system.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public interface Question {
-    String getTextQuestion();
+public class Question {
+    private final String textQuestion;
 
-    List<Answer> getAnswerList();
+    private List<Answer> answerList = new ArrayList<>();
 
-    void setAnswers(List<Answer> answerList);
+    public Question(String textQuestion){
+        this.textQuestion = textQuestion;
+    }
+
+    public String getTextQuestion() {
+        return textQuestion;
+    }
+
+    public List<Answer> getAnswerList() {
+        return answerList;
+    }
+
+    public void setAnswers(List<Answer> answerList) {
+        this.answerList = answerList;
+    }
+
+    public Answer getAnswer(int i) {
+        if (answerList.size() > i && i >= 0){
+            return answerList.get(i);
+        }
+
+        return null;
+    }
 }

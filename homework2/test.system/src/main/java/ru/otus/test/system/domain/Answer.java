@@ -1,7 +1,21 @@
 package ru.otus.test.system.domain;
 
-public interface Answer {
-    String getTextAnswer();
+public class Answer {
+    private final String textAnswer;
 
-    boolean isCorrect();
+    private final boolean isCorrect;
+
+    public Answer(String textAnswer,
+                      boolean isCorrect){
+        this.textAnswer = textAnswer;
+        this.isCorrect = isCorrect;
+    }
+
+    public String getTextAnswer() {
+        return textAnswer;
+    }
+
+    public boolean isCorrect() {
+        return isCorrect;
+    }
 }

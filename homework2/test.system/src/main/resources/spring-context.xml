@@ -10,7 +10,10 @@
         <constructor-arg index="2" value="#"/>
     </bean>
 
+    <bean id="testController" class="ru.otus.test.system.controller.TestControllerImpl" />
+
     <bean id="testService" class="ru.otus.test.system.service.TestServiceImpl">
         <constructor-arg index="0" ref="testDao"/>
+        <constructor-arg index="1" ref="testController"/>
     </bean>
 </beans>

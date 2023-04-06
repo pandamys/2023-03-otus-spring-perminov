@@ -3,10 +3,6 @@ package ru.otus.test.system.dao;
 import ru.otus.test.system.domain.Test;
 import ru.otus.test.system.domain.Question;
 import ru.otus.test.system.domain.Answer;
-import ru.otus.test.system.domain.TestImpl;
-import ru.otus.test.system.domain.QuestionImpl;
-import ru.otus.test.system.domain.AnswerImpl;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +34,6 @@ public class TestDaoImpl implements TestDao {
         List<String> lines = new ArrayList<>();
         readFromCSV(lines);
         test = createTest(lines);
-
         return test;
     }
 
@@ -56,7 +51,7 @@ public class TestDaoImpl implements TestDao {
     }
 
     private Test createTest(List<String> lines){
-        TestImpl test = new TestImpl();
+        Test test = new Test();
         String[] splitLine;
         String line;
         Question question;
@@ -65,7 +60,7 @@ public class TestDaoImpl implements TestDao {
             line = lines.get(i);
             splitLine = line.split(delimiterColumn);
             if (splitLine.length == 3){
-                question = new QuestionImpl(splitLine[0]);
+                question = new Question(splitLine[0]);
                 answers = getAnswers(splitLine[1], splitLine[2]);
                 question.setAnswers(answers);
                 test.addQuestion(question);
@@ -75,14 +70,14 @@ public class TestDaoImpl implements TestDao {
     }
 
     private List<Answer> getAnswers(String stringAnswers,
-                                         String correct){
+                                    String correct){
         String[] splitCell;
         Answer answer;
         List<Answer> answers = new ArrayList<>();
 
         splitCell = stringAnswers.split(delimiterCell);
         for (String stringAnswer: splitCell){
-            answer = new AnswerImpl(stringAnswer, correct.equals(stringAnswer));
+            answer = new Answer(stringAnswer, correct.equals(stringAnswer));
             answers.add(answer);
         }
         return answers;
