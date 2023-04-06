@@ -39,11 +39,8 @@ public class TestDaoImpl implements TestDao {
 
     private void readFromCSV(List<String> lines){
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))){
-            String newLine;
-
             while (reader.ready()){
-                newLine = reader.readLine();
-                lines.add(newLine);
+                lines.add(reader.readLine());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
