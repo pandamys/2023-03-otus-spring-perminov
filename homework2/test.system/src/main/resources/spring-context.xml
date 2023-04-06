@@ -3,17 +3,4 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-    <bean id="testDao" class="ru.otus.test.system.dao.TestDaoImpl">
-        <constructor-arg index="0" value="questions-for-test.csv"/>
-        <constructor-arg index="1" value=";"/>
-        <constructor-arg index="2" value="#"/>
-    </bean>
-
-    <bean id="testController" class="ru.otus.test.system.controller.TestControllerImpl" />
-
-    <bean id="testService" class="ru.otus.test.system.service.TestServiceImpl">
-        <constructor-arg index="0" ref="testDao"/>
-        <constructor-arg index="1" ref="testController"/>
-    </bean>
 </beans>
