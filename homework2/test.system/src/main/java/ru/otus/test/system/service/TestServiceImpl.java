@@ -13,12 +13,15 @@ public class TestServiceImpl implements TestService {
 
     public TestServiceImpl(TestDao dao) {
         this.dao = dao;
+        getTest();
     }
 
+    @Override
     public void getTest() {
         this.test = dao.get();
     }
 
+    @Override
     public void printQuestions(){
         if (test != null) {
             int x = 1;

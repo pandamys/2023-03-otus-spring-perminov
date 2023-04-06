@@ -1,7 +1,6 @@
-import junit.framework.TestCase;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.otus.test.system.dao.TestDao;
 import ru.otus.test.system.service.TestService;
@@ -9,7 +8,7 @@ import ru.otus.test.system.service.TestService;
 public class TestForTestService {
     private TestService testService;
     private TestDao testDao;
-    @Before
+    @BeforeEach
     public void setUp() {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/spring-context.xml");
         testDao = context.getBean(TestDao.class);
@@ -21,9 +20,9 @@ public class TestForTestService {
         String expectedMessage = "Test not initialized";
         try {
             testService.printQuestions();
-            Assert.fail("Excepted exception");
+            Assertions.fail("Excepted exception");
         } catch (RuntimeException e){
-            Assert.assertEquals(e.getMessage(), expectedMessage);
+            Assertions.assertEquals(e.getMessage(), expectedMessage);
         }
     }
 }

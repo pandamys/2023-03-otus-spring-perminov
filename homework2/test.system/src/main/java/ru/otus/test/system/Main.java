@@ -7,7 +7,6 @@ public class Main {
     public static void main(String[] args) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/spring-context.xml");
         TestService testService = context.getBean(TestService.class);
-        testService.getTest();
         testService.printQuestions();
     }
 }

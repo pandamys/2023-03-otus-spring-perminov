@@ -1,9 +1,9 @@
 package ru.otus.test.system.domain;
 
 public class AnswerImpl implements Answer {
-    private String textAnswer;
+    private final String textAnswer;
 
-    private boolean isCorrect;
+    private final boolean isCorrect;
 
     public AnswerImpl(String textAnswer,
                       boolean isCorrect){
