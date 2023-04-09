@@ -3,6 +3,7 @@ package ru.otus.test.system.service;
 import ru.otus.test.system.controller.TestController;
 import ru.otus.test.system.dao.TestDao;
 import ru.otus.test.system.domain.Answer;
+import ru.otus.test.system.domain.Person;
 import ru.otus.test.system.domain.Question;
 import ru.otus.test.system.domain.Test;
 
@@ -73,7 +74,20 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public void start() {
-        controller.startTesting();
+        String startMessage;
+        String nameMessage;
+        String surnameMessage;
+        String name;
+        String surname;
+
+        startMessage = "Welcome to testing.";
+        nameMessage = "Please enter your name";
+        surnameMessage = "Please enter your surname";
+
+        System.out.println(startMessage);
+        name = controller.readParameter(nameMessage);
+        surname = controller.readParameter(surnameMessage);
+        controller.setPerson(new Person(name, surname));
     }
 
     @Override

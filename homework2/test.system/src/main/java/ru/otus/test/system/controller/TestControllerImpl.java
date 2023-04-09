@@ -10,24 +10,6 @@ public class TestControllerImpl implements TestController {
     private Person person;
 
     @Override
-    public void startTesting() {
-        String startMessage;
-        String nameMessage;
-        String surnameMessage;
-        String name;
-        String surname;
-
-        startMessage = "Welcome to testing.";
-        nameMessage = "Please enter your name";
-        surnameMessage = "Please enter your surname";
-
-        System.out.println(startMessage);
-        name = readParameter(nameMessage);
-        surname = readParameter(surnameMessage);
-        this.person = new Person(name, surname);
-    }
-
-    @Override
     public String readParameter(String message){
         String parameter;
         InputStreamReader reader = new InputStreamReader(System.in);
@@ -57,5 +39,9 @@ public class TestControllerImpl implements TestController {
 
     public Person getPerson() {
         return person;
+    }
+
+    public void setPerson(Person person){
+        this.person = person;
     }
 }
