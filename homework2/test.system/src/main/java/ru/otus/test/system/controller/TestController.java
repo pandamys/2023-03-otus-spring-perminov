@@ -4,9 +4,9 @@ import ru.otus.test.system.domain.Person;
 
 public interface TestController {
 
-    String readParameter(String message);
+    String readConsole(String message);
 
-    int readIntParameter(String message);
+    int readIntConsole(String message);
 
     Person getPerson();
 

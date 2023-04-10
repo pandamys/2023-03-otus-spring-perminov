@@ -3,7 +3,7 @@ package ru.otus.test.system.service;
 import ru.otus.test.system.domain.Question;
 
 public interface TestService {
-    void getTest();
+    void testing();
 
     void start();
 

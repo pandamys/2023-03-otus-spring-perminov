@@ -1,5 +1,6 @@
 package ru.otus.test.system.service;
 
+import org.springframework.stereotype.Service;
 import ru.otus.test.system.controller.TestController;
 import ru.otus.test.system.dao.TestDao;
 import ru.otus.test.system.domain.Answer;
@@ -9,6 +10,7 @@ import ru.otus.test.system.domain.Test;
 
 import java.util.List;
 
+@Service
 public class TestServiceImpl implements TestService {
     private final TestDao dao;
 
@@ -19,13 +21,15 @@ public class TestServiceImpl implements TestService {
     public TestServiceImpl(TestDao dao,
                            TestController controller) {
         this.dao = dao;
-        getTest();
+        this.test = dao.get();
         this.controller = controller;
     }
 
     @Override
-    public void getTest() {
-        this.test = dao.get();
+    public void testing(){
+        start();
+        printQuestions();
+        stop();
     }
 
     @Override
@@ -42,23 +46,6 @@ public class TestServiceImpl implements TestService {
         } else {
             throw new RuntimeException("Test not initialized");
         }
-    }
-
-    private void printAnswers(Question question) {
-        List<Answer> answers;
-        int y = 1;
-
-        answers = question.getAnswerList();
-        for (Answer answer : answers){
-            System.out.printf("%d: %s%n", y, answer.getTextAnswer());
-            y++;
-        }
-    }
-
-    private void readUserAnswer(Question question) {
-        String message = "Please enter number correct answer";
-        int userAnswer = controller.readIntParameter(message);
-        checkCorrectAnswer(question, userAnswer);
     }
 
     @Override
@@ -85,8 +72,8 @@ public class TestServiceImpl implements TestService {
         surnameMessage = "Please enter your surname";
 
         System.out.println(startMessage);
-        name = controller.readParameter(nameMessage);
-        surname = controller.readParameter(surnameMessage);
+        name = controller.readConsole(nameMessage);
+        surname = controller.readConsole(surnameMessage);
         controller.setPerson(new Person(name, surname));
     }
 
@@ -96,5 +83,22 @@ public class TestServiceImpl implements TestService {
                 controller.getPerson(),
                 test.getResults());
         System.out.println(stopMessage);
+    }
+
+    private void printAnswers(Question question) {
+        List<Answer> answers;
+        int y = 1;
+
+        answers = question.getAnswerList();
+        for (Answer answer : answers){
+            System.out.printf("%d: %s%n", y, answer.getTextAnswer());
+            y++;
+        }
+    }
+
+    private void readUserAnswer(Question question) {
+        String message = "Please enter number correct answer";
+        int userAnswer = controller.readIntConsole(message);
+        checkCorrectAnswer(question, userAnswer);
     }
 }

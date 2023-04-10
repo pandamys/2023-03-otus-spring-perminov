@@ -1,16 +1,18 @@
 package ru.otus.test.system.controller;
 
+import org.springframework.stereotype.Controller;
 import ru.otus.test.system.domain.Person;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+@Controller
 public class TestControllerImpl implements TestController {
     private Person person;
 
     @Override
-    public String readParameter(String message){
+    public String readConsole(String message){
         String parameter;
         InputStreamReader reader = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(reader);
@@ -25,10 +27,10 @@ public class TestControllerImpl implements TestController {
     }
 
     @Override
-    public int readIntParameter(String message){
+    public int readIntConsole(String message){
         String parameter;
         int result = -1;
-        parameter = readParameter(message);
+        parameter = readConsole(message);
         try {
             result = Integer.parseInt(parameter);
         } catch (NumberFormatException e){
