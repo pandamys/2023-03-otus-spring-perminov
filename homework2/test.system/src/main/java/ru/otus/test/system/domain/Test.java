@@ -3,12 +3,12 @@ package ru.otus.test.system.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestImpl implements Test {
-    private List<Question> questions = new ArrayList<>();
+public class Test {
+    private final List<Question> questions = new ArrayList<>();
 
     private int correctAnswers = 0;
 
-    public TestImpl() {
+    public Test() {
     }
 
     public List<Question> getQuestions() {
@@ -19,7 +19,6 @@ public class TestImpl implements Test {
         return questions.get(question).getAnswerList().get(answer);
     }
 
-    @Override
     public void addQuestion(Question question) {
         this.questions.add(question);
     }
@@ -28,5 +27,7 @@ public class TestImpl implements Test {
         return correctAnswers;
     }
 
-
+    public void addCorrect(){
+        correctAnswers++;
+    }
 }

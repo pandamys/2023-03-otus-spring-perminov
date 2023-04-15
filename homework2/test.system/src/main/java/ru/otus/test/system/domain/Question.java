@@ -3,12 +3,12 @@ package ru.otus.test.system.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionImpl implements Question {
+public class Question {
     private final String textQuestion;
 
-    private List<Answer> answerList = new ArrayList<Answer>();
+    private List<Answer> answerList = new ArrayList<>();
 
-    public QuestionImpl(String textQuestion){
+    public Question(String textQuestion){
         this.textQuestion = textQuestion;
     }
 
@@ -22,5 +22,13 @@ public class QuestionImpl implements Question {
 
     public void setAnswers(List<Answer> answerList) {
         this.answerList = answerList;
+    }
+
+    public Answer getAnswer(int i) {
+        if (answerList.size() > i && i >= 0){
+            return answerList.get(i);
+        }
+
+        return null;
     }
 }

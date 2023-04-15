@@ -1,11 +1,11 @@
 package ru.otus.test.system.domain;
 
-public class AnswerImpl implements Answer {
-    private String textAnswer;
+public class Answer {
+    private final String textAnswer;
 
-    private boolean isCorrect;
+    private final boolean isCorrect;
 
-    public AnswerImpl(String textAnswer,
+    public Answer(String textAnswer,
                       boolean isCorrect){
         this.textAnswer = textAnswer;
         this.isCorrect = isCorrect;
