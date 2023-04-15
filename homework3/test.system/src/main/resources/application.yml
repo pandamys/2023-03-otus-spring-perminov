@@ -1,0 +1,13 @@
+spring:
+  messages:
+    basename: "i18n/messages"
+
+application:
+  locale: "ru_RU"
+  #locale: "en"
+
+csv:
+  path: "questions-for-test_${application.locale}.csv"
+  delimiter:
+    column: ";"
+    value: "#"
