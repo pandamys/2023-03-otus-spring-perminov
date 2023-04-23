@@ -2,10 +2,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.test.system.controller.TestController;
 import ru.otus.test.system.dao.TestDao;
 import ru.otus.test.system.domain.Answer;
@@ -17,7 +17,6 @@ import ru.otus.test.system.service.TestServiceImpl;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-
 import static org.mockito.ArgumentMatchers.*;
 
 @SpringBootTest(classes = TestForTestService.class)
@@ -26,13 +25,13 @@ public class TestForTestService {
     private final PrintStream standardOut = System.out;
     private TestService testService;
 
-    @Mock
+    @MockBean
     private TestController testControllerMock;
 
-    @Mock
+    @MockBean
     private TestDao testDaoMock;
 
-    @Mock
+    @MockBean
     private LocalizationService localizationServiceMock;
 
     @BeforeEach
@@ -72,6 +71,7 @@ public class TestForTestService {
         Mockito.when(localizationServiceMock.getLocalizationMessage("message.question"))
                 .thenReturn("Question");
 
+        testService.start("V", "P");
         testService.testing();
         Assertions.assertEquals(expectedMessage, outputStreamCaptor.toString().trim());
     }

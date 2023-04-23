@@ -23,6 +23,7 @@
 
         <maven-enforcer-plugin.version>3.1.0</maven-enforcer-plugin.version>
         <minimal.maven.version>3.3.9</minimal.maven.version>
+        <sprint.shell.version>3.0.1</sprint.shell.version>
     </properties>
 
 
@@ -36,6 +37,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.shell</groupId>
+            <artifactId>spring-shell-starter</artifactId>
+            <version>${sprint.shell.version}</version>
         </dependency>
     </dependencies>
 

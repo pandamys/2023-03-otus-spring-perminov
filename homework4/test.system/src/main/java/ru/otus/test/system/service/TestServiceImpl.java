@@ -31,24 +31,15 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public void testing(){
-        start();
+        test.resetResults();
         printQuestions();
         stop();
     }
 
     @Override
-    public void start() {
+    public void start(String name, String surname) {
         String startMessage;
-        String nameMessage;
-        String surnameMessage;
-        String name;
-        String surname;
 
-        nameMessage = localizationService.getLocalizationMessage("message.name");
-        surnameMessage = localizationService.getLocalizationMessage("message.surname");
-
-        name = controller.readConsole(nameMessage);
-        surname = controller.readConsole(surnameMessage);
         controller.setPerson(new Person(name, surname));
         startMessage = localizationService
                 .getLocalizationMessage("message.welcome", controller.getPerson().getFullName());
@@ -90,6 +81,11 @@ public class TestServiceImpl implements TestService {
                 test.addCorrect();
             }
         }
+    }
+
+    @Override
+    public Person getUser(){
+        return controller.getPerson();
     }
 
     private void printAnswers(Question question) {

@@ -30,4 +30,8 @@ public class Test {
     public void addCorrect(){
         correctAnswers++;
     }
+
+    public void resetResults(){
+        this.correctAnswers = 0;
+    }
 }
