@@ -3,11 +3,11 @@ spring:
     basename: "i18n/messages"
 
 application:
-  locale: "ru_RU"
-  #locale: "en"
+  #locale: "ru_RU"
+  locale: "en"
 
 csv:
-  path: "questions-for-test_${application.locale}.csv"
+  path: "questions-for-test_"
   delimiter:
     column: ";"
     value: "#"

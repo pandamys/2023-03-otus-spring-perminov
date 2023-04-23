@@ -39,6 +39,7 @@ public class TestControllerImpl implements TestController {
         return result;
     }
 
+    @Override
     public Person getPerson() {
         return person;
     }

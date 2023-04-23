@@ -2,6 +2,7 @@ package ru.otus.test.system.dao;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
+import ru.otus.test.system.configs.AppProps;
 import ru.otus.test.system.domain.Test;
 import ru.otus.test.system.domain.Question;
 import ru.otus.test.system.domain.Answer;
@@ -20,9 +21,14 @@ public class TestDaoImpl implements TestDao {
 
     private final String delimiterCell;
 
+    private final AppProps appProps;
+
     public TestDaoImpl(@Value("${csv.path}") String nameFile,
                        @Value("${csv.delimiter.column}") String delimiterColumn,
-                       @Value("${csv.delimiter.value}") String delimiterCell) {
+                       @Value("${csv.delimiter.value}") String delimiterCell,
+                       AppProps appProps) {
+        this.appProps = appProps;
+        nameFile = nameFile + appProps.getLocale() + ".csv";
         inputStream = getClass().getClassLoader().getResourceAsStream(nameFile);
         if (inputStream == null){
             throw new IllegalStateException("File not found: " + nameFile);
