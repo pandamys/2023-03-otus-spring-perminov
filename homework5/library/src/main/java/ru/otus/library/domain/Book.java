@@ -43,4 +43,8 @@ public class Book {
     public void setGenre(Genre genre) {
         this.genre = genre;
     }
+
+    public String getInfoAboutBook(){
+        return String.format("Book: ([name: %s]-[author: %s]-[genre: %s]", name, author.getFullName(), genre.getName());
+    }
 }

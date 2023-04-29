@@ -13,9 +13,10 @@ public class BookServiceImpl implements BookService {
     public BookServiceImpl(BookDao bookDao) {
         this.bookDao = bookDao;
     }
+
     @Override
     public Book getBookById(long id) {
-        return null;
+        return bookDao.getBookById(id);
     }
 
     @Override
@@ -25,11 +26,14 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getAllBooks() {
-        return null;
+        return bookDao.getAllBooks();
     }
 
     @Override
-    public boolean addBook(Book book) {
+    public boolean addBook(String name,
+                           String authorName,
+                           String authorSurname,
+                           String genre) {
         return false;
     }
 

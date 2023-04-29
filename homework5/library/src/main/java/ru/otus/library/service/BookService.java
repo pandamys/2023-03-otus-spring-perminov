@@ -11,7 +11,7 @@ public interface BookService {
 
     List<Book> getAllBooks();
 
-    boolean addBook(Book book);
+    boolean addBook(String name, String authorName, String authorSurname, String genre);
 
     void updateBookName(long id, String name);
 
