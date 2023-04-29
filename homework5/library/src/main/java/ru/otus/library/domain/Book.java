@@ -1,13 +1,19 @@
 package ru.otus.library.domain;
 
 public class Book {
-    private final long id;
+    private long id;
 
     private String name;
 
     private Author author;
 
     private Genre genre;
+
+    public Book(String name, Author author, Genre genre){
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+    }
 
     public Book(long id, String name, Author author, Genre genre) {
         this.id = id;
@@ -45,6 +51,6 @@ public class Book {
     }
 
     public String getInfoAboutBook(){
-        return String.format("Book: ([name: %s]-[author: %s]-[genre: %s]", name, author.getFullName(), genre.getName());
+        return String.format("Book: ([id: %d]-[name: %s]-[author: %s]-[genre: %s]", id, name, author.getFullName(), genre.getName());
     }
 }

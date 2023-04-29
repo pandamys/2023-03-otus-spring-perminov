@@ -5,18 +5,18 @@ import ru.otus.library.domain.Book;
 import ru.otus.library.domain.Genre;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BookDao {
-    boolean addBook(String name,
-                    String genre,
-                    String authorName,
-                    String authorSurname);
-
-    boolean updateBookName(long id, String name);
-
     Book getBookById(long id);
 
     List<Book> getAllBooks();
+
+    void insertBook(Book book);
+
+    void updateBook(long id, Map<String, Object> params);
+
+    void deleteBookById(long id);
 
     Author getAuthorById(long id);
 

@@ -1,5 +1,6 @@
 package ru.otus.library.dao;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -20,31 +21,28 @@ public class BookDaoJdbc implements BookDao {
     public BookDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations){
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
     }
-    @Override
-    public boolean addBook(String name, String genre, String authorName, String authorSurname) {
-        return false;
-    }
-
-    @Override
-    public boolean updateBookName(long id, String name) {
-        return false;
-    }
 
     @Override
     public Book getBookById(long id) {
+        Book book;
         Map<String, Object> params = Collections.singletonMap("id", id);
-        return namedParameterJdbcOperations.queryForObject(
-                "select * from books b " +
-                        "join authors a on b.author=a.id " +
-                        "join genres g on b.genre=g.id " +
-                        "where b.id = :id", params, new BookMapper());
+        try {
+            book = namedParameterJdbcOperations.queryForObject(
+                    "select b.*, a.name author_name, a.surname author_surname, g.name genre_name from books b " +
+                            "join authors a on b.author=a.id " +
+                            "join genres g on b.genre=g.id " +
+                            "where b.id = :id", params, new BookMapper());
+        } catch (EmptyResultDataAccessException e){
+            book = null;
+        }
+        return book;
     }
 
     @Override
     public List<Book> getAllBooks() {
         List<Book> books;
         books = namedParameterJdbcOperations.query(
-                "select * from books b " +
+                "select b.*, a.name author_name, a.surname author_surname, g.name genre_name from books b " +
                         "join authors a on b.author=a.id " +
                         "join genres g on b.genre=g.id",
                 new BookMapper());
@@ -52,17 +50,52 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public Author getAuthorById(long id) {
+    public void insertBook(Book book) {
+        namedParameterJdbcOperations.update(
+                "insert into books (name, author, genre) values (:name, :author, :genre)",
+                Map.of("name", book.getName(),
+                        "author", book.getAuthor().getId(),
+                        "genre", book.getGenre().getId()));
+    }
+
+    @Override
+    public void updateBook(long id, Map<String, Object> params) {
+
+    }
+
+    @Override
+    public void deleteBookById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
-        return namedParameterJdbcOperations.queryForObject(
-                "select id, name, surname from authors where id = :id", params, new AuthorMapper());
+        namedParameterJdbcOperations.update(
+                "delete from books where id = :id", params
+        );
+    }
+
+    @Override
+    public Author getAuthorById(long id) {
+        Author author;
+        Map<String, Object> params = Collections.singletonMap("id", id);
+        try {
+            author = namedParameterJdbcOperations.queryForObject(
+                    "select id, name, surname from authors where id = :id", params, new AuthorMapper());
+        } catch (EmptyResultDataAccessException e){
+            author = null;
+        }
+
+        return author;
     }
 
     @Override
     public Genre getGenreById(long id) {
+        Genre genre;
         Map<String, Object> params = Collections.singletonMap("id", id);
-        return namedParameterJdbcOperations.queryForObject(
-                "select id, name from genre where id = :id", params, new GenreMapper());
+        try {
+            genre = namedParameterJdbcOperations.queryForObject(
+                    "select id, name from genres where id = :id", params, new GenreMapper());
+        } catch (EmptyResultDataAccessException e){
+            genre = null;
+        }
+        return genre;
     }
 
     private static class BookMapper implements RowMapper<Book> {
@@ -85,8 +118,8 @@ public class BookDaoJdbc implements BookDao {
         @Override
         public Author mapRow(ResultSet resultSet, int i) throws SQLException {
             long id = resultSet.getLong("id");
-            String name = resultSet.getString("author_name");
-            String surname = resultSet.getString("author_surname");
+            String name = resultSet.getString("name");
+            String surname = resultSet.getString("surname");
             return new Author(id, name, surname);
         }
     }
@@ -95,7 +128,7 @@ public class BookDaoJdbc implements BookDao {
         @Override
         public Genre mapRow(ResultSet resultSet, int i) throws SQLException {
             long id = resultSet.getLong("id");
-            String name = resultSet.getString("genre_name");
+            String name = resultSet.getString("name");
             return new Genre(id, name);
         }
     }

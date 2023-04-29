@@ -2,7 +2,9 @@ package ru.otus.library.service;
 
 import org.springframework.stereotype.Service;
 import ru.otus.library.dao.BookDao;
+import ru.otus.library.domain.Author;
 import ru.otus.library.domain.Book;
+import ru.otus.library.domain.Genre;
 
 import java.util.List;
 
@@ -31,10 +33,21 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public boolean addBook(String name,
-                           String authorName,
-                           String authorSurname,
-                           String genre) {
-        return false;
+                           Long authorId,
+                           Long genreId) {
+        Book book;
+        Author author;
+        Genre genre;
+
+        author = bookDao.getAuthorById(authorId);
+        genre = bookDao.getGenreById(genreId);
+        if (author == null || genre == null){
+            return false;
+        } else {
+            book = new Book(name, author, genre);
+            bookDao.insertBook(book);
+            return true;
+        }
     }
 
     @Override
@@ -44,6 +57,13 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public boolean removeBook(long id) {
-        return false;
+        Book book;
+        book = getBookById(id);
+        if (book == null){
+            return false;
+        } else {
+            bookDao.deleteBookById(id);
+            return true;
+        }
     }
 }
