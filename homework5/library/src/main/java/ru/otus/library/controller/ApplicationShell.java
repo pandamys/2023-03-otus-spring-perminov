@@ -5,7 +5,9 @@ import org.springframework.shell.standard.ShellMethod;
 import ru.otus.library.domain.Book;
 import ru.otus.library.service.BookService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @ShellComponent
 public class ApplicationShell {
@@ -41,6 +43,15 @@ public class ApplicationShell {
         } else {
             System.out.println("Error book add");
         }
+    }
+
+    @ShellMethod(value = "Update book", key = {"updateBook"})
+    public void updateBook(long bookId, String name, Long authorId, Long genreId){
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", name);
+        params.put("authorId", authorId);
+        params.put("genreId", genreId);
+        bookService.updateBookName(bookId, params);
     }
 
     @ShellMethod(value = "Delete book", key = {"rm", "deleteBook"})

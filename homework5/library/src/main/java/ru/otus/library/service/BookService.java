@@ -3,6 +3,7 @@ package ru.otus.library.service;
 import ru.otus.library.domain.Book;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BookService {
     Book getBookById(long id);
@@ -13,7 +14,7 @@ public interface BookService {
 
     boolean addBook(String name, Long author, Long genre);
 
-    void updateBookName(long id, String name);
+    void updateBookName(long id, Map<String, Object> params);
 
     boolean removeBook(long id);
 }

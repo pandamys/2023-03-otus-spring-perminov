@@ -7,6 +7,7 @@ import ru.otus.library.domain.Book;
 import ru.otus.library.domain.Genre;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -51,8 +52,27 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void updateBookName(long id, String name) {
-
+    public void updateBookName(long id, Map<String, Object> params) {
+        Book book;
+        Author author;
+        Genre genre;
+        book = bookDao.getBookById(id);
+        if (params.containsKey("name")){
+            book.setName((String) params.get("name"));
+        }
+        if (params.containsKey("authorId")){
+            author = bookDao.getAuthorById((Long) params.get("authorId"));
+            if (author != null){
+                book.setAuthor(author);
+            }
+        }
+        if (params.containsKey("genreId")){
+            genre = bookDao.getGenreById((Long) params.get("genreId"));
+            if (genre != null){
+                book.setGenre(genre);
+            }
+        }
+        bookDao.updateBook(book);
     }
 
     @Override

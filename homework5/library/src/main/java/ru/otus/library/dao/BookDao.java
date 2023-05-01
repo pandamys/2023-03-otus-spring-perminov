@@ -14,7 +14,7 @@ public interface BookDao {
 
     void insertBook(Book book);
 
-    void updateBook(long id, Map<String, Object> params);
+    void updateBook(Book book);
 
     void deleteBookById(long id);
 
