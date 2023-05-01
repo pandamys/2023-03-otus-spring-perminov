@@ -52,7 +52,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void updateBookName(long id, Map<String, Object> params) {
+    public void updateBook(long id, Map<String, Object> params) {
         Book book;
         Author author;
         Genre genre;

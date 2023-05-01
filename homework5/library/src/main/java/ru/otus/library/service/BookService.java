@@ -14,7 +14,7 @@ public interface BookService {
 
     boolean addBook(String name, Long author, Long genre);
 
-    void updateBookName(long id, Map<String, Object> params);
+    void updateBook(long id, Map<String, Object> params);
 
     boolean removeBook(long id);
 }

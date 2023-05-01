@@ -5,7 +5,6 @@ import ru.otus.library.domain.Book;
 import ru.otus.library.domain.Genre;
 
 import java.util.List;
-import java.util.Map;
 
 public interface BookDao {
     Book getBookById(long id);
