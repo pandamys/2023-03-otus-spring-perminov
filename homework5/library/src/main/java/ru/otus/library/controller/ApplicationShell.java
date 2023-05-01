@@ -30,7 +30,7 @@ public class ApplicationShell {
         if (book != null) {
             System.out.println(book.getInfoAboutBook());
         } else {
-            System.out.println("Book with id '%s' not found");
+            System.out.printf("Book with id '%s' not found%n", id);
         }
     }
 
@@ -51,7 +51,7 @@ public class ApplicationShell {
         params.put("name", name);
         params.put("authorId", authorId);
         params.put("genreId", genreId);
-        bookService.updateBookName(bookId, params);
+        bookService.updateBook(bookId, params);
     }
 
     @ShellMethod(value = "Delete book", key = {"rm", "deleteBook"})

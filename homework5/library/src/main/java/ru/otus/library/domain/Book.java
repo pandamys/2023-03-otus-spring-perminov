@@ -51,6 +51,7 @@ public class Book {
     }
 
     public String getInfoAboutBook(){
-        return String.format("Book: ([id: %d]-[name: %s]-[author: %s]-[genre: %s]", id, name, author.getFullName(), genre.getName());
+        return String.format("Book: ([id: %d]-[name: %s]-[author: %s]-[genre: %s]",
+                id, name, author.getFullName(), genre.getName());
     }
 }
