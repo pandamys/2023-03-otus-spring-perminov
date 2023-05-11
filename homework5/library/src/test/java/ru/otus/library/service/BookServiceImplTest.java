@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import ru.otus.library.dao.AuthorDao;
 import ru.otus.library.dao.BookDao;
+import ru.otus.library.dao.GenreDao;
 import ru.otus.library.domain.Author;
 import ru.otus.library.domain.Book;
 import ru.otus.library.domain.Genre;
@@ -19,10 +21,14 @@ public class BookServiceImplTest {
     private BookService bookService;
     @MockBean
     private BookDao bookDaoMock;
+    @MockBean
+    private AuthorDao authorDaoMock;
+    @MockBean
+    private GenreDao genreDaoMock;
 
     @BeforeEach
     public void setUp() {
-        bookService = new BookServiceImpl(bookDaoMock);
+        bookService = new BookServiceImpl(bookDaoMock, authorDaoMock, genreDaoMock);
     }
 
     @DisplayName("Test get book")
@@ -31,7 +37,7 @@ public class BookServiceImplTest {
         Book expectedBook, actualBook;
 
         expectedBook = getTestBook();
-        Mockito.when(bookDaoMock.getBookById(expectedBook.getId())).thenReturn(expectedBook);
+        Mockito.when(bookDaoMock.getById(expectedBook.getId())).thenReturn(expectedBook);
         actualBook = bookService.getBookById(expectedBook.getId());
 
         assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook);
@@ -44,7 +50,7 @@ public class BookServiceImplTest {
         boolean actualResult;
 
         expectedBook = getTestBook();
-        Mockito.when(bookDaoMock.getBookById(expectedBook.getId())).thenReturn(expectedBook);
+        Mockito.when(bookDaoMock.getById(expectedBook.getId())).thenReturn(expectedBook);
         actualResult = bookService.removeBook(expectedBook.getId());
         Assertions.assertThat(actualResult).isEqualTo(true);
     }

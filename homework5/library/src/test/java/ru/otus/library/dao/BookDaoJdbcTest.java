@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.EmptyResultDataAccessException;
 import ru.otus.library.domain.Author;
 import ru.otus.library.domain.Book;
 import ru.otus.library.domain.Genre;
@@ -32,7 +31,7 @@ public class BookDaoJdbcTest {
         genre = new Genre(1, "Test_Genre");
         expectedBook = new Book(2, "TestBook2", author, genre);
 
-        actualBook = bookDao.getBookById(expectedBook.getId());
+        actualBook = bookDao.getById(expectedBook.getId());
         assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook);
     }
 
@@ -47,8 +46,8 @@ public class BookDaoJdbcTest {
         genre = new Genre(1, "Test_Genre");
         expectedBook = new Book(3, "TestBook3", author, genre);
 
-        bookDao.insertBook(expectedBook);
-        actualBook = bookDao.getBookById(expectedBook.getId());
+        bookDao.insert(expectedBook);
+        actualBook = bookDao.getById(expectedBook.getId());
         assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook);
     }
 
@@ -57,12 +56,12 @@ public class BookDaoJdbcTest {
     public void testDeleteBook(){
         long workId = 2;
 
-        assertThatCode(() -> bookDao.getBookById(workId))
+        assertThatCode(() -> bookDao.getById(workId))
                 .doesNotThrowAnyException();
 
-        bookDao.deleteBookById(workId);
+        bookDao.deleteById(workId);
 
-        assertNull(bookDao.getBookById(workId));
+        assertNull(bookDao.getById(workId));
     }
 
     @DisplayName("Test update name book")
@@ -77,8 +76,8 @@ public class BookDaoJdbcTest {
         genre = new Genre(1, "Test_Genre");
         expectedBook = new Book(1, newBookName, author, genre);
 
-        bookDao.updateBook(expectedBook);
-        actualBook = bookDao.getBookById(expectedBook.getId());
+        bookDao.update(expectedBook);
+        actualBook = bookDao.getById(expectedBook.getId());
         assertEquals(actualBook.getName(), newBookName);
     }
 }

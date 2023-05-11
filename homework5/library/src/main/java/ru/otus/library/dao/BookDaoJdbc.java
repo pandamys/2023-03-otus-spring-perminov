@@ -23,12 +23,12 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public Book getBookById(long id) {
+    public Book getById(long id) {
         Book book;
         Map<String, Object> params = Collections.singletonMap("id", id);
         try {
             book = namedParameterJdbcOperations.queryForObject(
-                    "select b.*, a.name author_name, a.surname author_surname, g.name genre_name from books b " +
+                    "select b.id, b.name, b.author, b.genre, a.name author_name, a.surname author_surname, g.name genre_name from books b " +
                             "join authors a on b.author=a.id " +
                             "join genres g on b.genre=g.id " +
                             "where b.id = :id", params, new BookMapper());
@@ -39,10 +39,10 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public List<Book> getAllBooks() {
+    public List<Book> getAll() {
         List<Book> books;
         books = namedParameterJdbcOperations.query(
-                "select b.*, a.name author_name, a.surname author_surname, g.name genre_name from books b " +
+                "select b.id, b.name, b.author, b.genre, a.name author_name, a.surname author_surname, g.name genre_name from books b " +
                         "join authors a on b.author=a.id " +
                         "join genres g on b.genre=g.id",
                 new BookMapper());
@@ -50,7 +50,7 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public void insertBook(Book book) {
+    public void insert(Book book) {
         namedParameterJdbcOperations.update(
                 "insert into books (name, author, genre) values (:name, :author, :genre)",
                 Map.of("name", book.getName(),
@@ -59,7 +59,7 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public void updateBook(Book book) {
+    public void update(Book book) {
         namedParameterJdbcOperations.update(
                 "update books set name = :name, author = :author, genre = :genre where id = :id",
                 Map.of("id", book.getId(),
@@ -69,38 +69,11 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public void deleteBookById(long id) {
+    public void deleteById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         namedParameterJdbcOperations.update(
                 "delete from books where id = :id", params
         );
-    }
-
-    @Override
-    public Author getAuthorById(long id) {
-        Author author;
-        Map<String, Object> params = Collections.singletonMap("id", id);
-        try {
-            author = namedParameterJdbcOperations.queryForObject(
-                    "select id, name, surname from authors where id = :id", params, new AuthorMapper());
-        } catch (EmptyResultDataAccessException e){
-            author = null;
-        }
-
-        return author;
-    }
-
-    @Override
-    public Genre getGenreById(long id) {
-        Genre genre;
-        Map<String, Object> params = Collections.singletonMap("id", id);
-        try {
-            genre = namedParameterJdbcOperations.queryForObject(
-                    "select id, name from genres where id = :id", params, new GenreMapper());
-        } catch (EmptyResultDataAccessException e){
-            genre = null;
-        }
-        return genre;
     }
 
     private static class BookMapper implements RowMapper<Book> {
@@ -116,25 +89,6 @@ public class BookDaoJdbc implements BookDao {
             Author author = new Author(authorId, authorName, authorSurname);
             Genre genre = new Genre(genreId, genreName);
             return new Book(id, name, author, genre);
-        }
-    }
-
-    private static class AuthorMapper implements RowMapper<Author> {
-        @Override
-        public Author mapRow(ResultSet resultSet, int i) throws SQLException {
-            long id = resultSet.getLong("id");
-            String name = resultSet.getString("name");
-            String surname = resultSet.getString("surname");
-            return new Author(id, name, surname);
-        }
-    }
-
-    private static class GenreMapper implements RowMapper<Genre> {
-        @Override
-        public Genre mapRow(ResultSet resultSet, int i) throws SQLException {
-            long id = resultSet.getLong("id");
-            String name = resultSet.getString("name");
-            return new Genre(id, name);
         }
     }
 }
