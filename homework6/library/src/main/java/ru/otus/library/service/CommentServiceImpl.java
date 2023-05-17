@@ -65,20 +65,16 @@ public class CommentServiceImpl implements CommentService {
         CommentBook commentBook;
         Book book;
         commentBook = commentBookDao.getById(id);
-        if (commentBook != null) {
-            if (text != null && !text.equals("")) {
+        if (text != null && !text.equals("")) {
                 commentBook.setText(text);
-            }
-            if (bookId > 0) {
-                book = bookDao.getById(bookId);
-                if (book != null) {
-                    commentBook.setBook(book);
-                }
-            }
-            commentBookDao.updateCommentBook(commentBook);
-        } else {
-            System.out.println("Comment not found");
         }
+        if (bookId > 0) {
+            book = bookDao.getById(bookId);
+            if (book != null) {
+                commentBook.setBook(book);
+            }
+        }
+        commentBookDao.updateCommentBook(commentBook);
     }
 
     @Override
