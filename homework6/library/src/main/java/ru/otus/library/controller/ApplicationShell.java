@@ -3,15 +3,22 @@ package ru.otus.library.controller;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ru.otus.library.domain.Book;
+import ru.otus.library.domain.CommentBook;
 import ru.otus.library.service.BookService;
+import ru.otus.library.service.CommentService;
+
 import java.util.List;
 
 @ShellComponent
 public class ApplicationShell {
     private final BookService bookService;
 
-    public ApplicationShell(BookService bookService){
+    private final CommentService commentService;
+
+    public ApplicationShell(BookService bookService,
+                            CommentService commentService){
         this.bookService = bookService;
+        this.commentService = commentService;
     }
 
     @ShellMethod(value = "Get all books", key = {"listBooks"})
@@ -66,6 +73,66 @@ public class ApplicationShell {
             System.out.println("Book deleted successful");
         } else {
             System.out.println("Error book delete");
+        }
+    }
+
+    @ShellMethod(value = "Get comment by id", key = {"getComment"})
+    public void getComment(long commentId){
+        CommentBook comment;
+        comment = commentService.getById(commentId);
+        if (comment != null){
+            comment.printComment();
+        } else {
+            System.out.println("Comment not found");
+        }
+    }
+
+    @ShellMethod(value = "Get comment by book", key = {"getCommentBook"})
+    public void getCommentByBook(long bookId){
+        List<CommentBook> comments;
+        comments = commentService.getCommentsForBook(bookId);
+        if (comments.size() > 0){
+            comments.forEach(CommentBook::printComment);
+        } else {
+            System.out.println("Comment for book not found");
+        }
+    }
+
+    @ShellMethod(value = "Get all comments", key = {"listComments", "lC"})
+    public void getComments(){
+        List<CommentBook> comments;
+        comments = commentService.getAll();
+        if (comments.size() > 0){
+            comments.forEach(CommentBook::printComment);
+        } else {
+            System.out.println("Comments not found");
+        }
+    }
+
+    @ShellMethod(value = "Add comment", key = {"addComment"})
+    public void addComment(String text, long bookId){
+        boolean result;
+        result = commentService.addComment(text, bookId);
+        if (result){
+            System.out.println("Comment added successful");
+        } else {
+            System.out.println("Error book add");
+        }
+    }
+
+    @ShellMethod(value = "Update comment", key = {"updateComment", "uC"})
+    public void updateComment(long commentId, String text, long bookId){
+        commentService.updateComment(commentId, text, bookId);
+    }
+
+    @ShellMethod(value = "Delete comment", key = {"rmCom", "deleteComment"})
+    public void deleteComment(long id){
+        boolean result;
+        result = commentService.removeComment(id);
+        if (result){
+            System.out.println("Comment deleted successful");
+        } else {
+            System.out.println("Error comment delete");
         }
     }
 }

@@ -12,3 +12,5 @@ insert into books (`name`, `author_id`, `genre_id`) values ('Brodiachiy Zamok', 
 insert into books (`name`, `author_id`, `genre_id`) values ('Metro 2033', 2, 1);
 insert into books (`name`, `author_id`, `genre_id`) values ('Master and Margarita', 4, 3);
 insert into books (`name`, `author_id`, `genre_id`) values ('Arial', 1, 1);
+
+insert into comments (`text`, `book_id`) values ('Cool book', 1);
