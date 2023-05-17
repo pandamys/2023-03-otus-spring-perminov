@@ -8,7 +8,9 @@ public interface BookDao {
 
     List<Book> getAll();
 
-    void insert(Book book);
+    Book getByName(String name);
+
+    Book insert(Book book);
 
     void update(Book book);
 

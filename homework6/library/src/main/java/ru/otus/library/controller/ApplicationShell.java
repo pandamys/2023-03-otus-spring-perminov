@@ -4,10 +4,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ru.otus.library.domain.Book;
 import ru.otus.library.service.BookService;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @ShellComponent
 public class ApplicationShell {
@@ -34,6 +31,17 @@ public class ApplicationShell {
         }
     }
 
+    @ShellMethod(value = "Get book by name", key = {"getBookName"})
+    public void getBookByName(String name){
+        Book book;
+        book = bookService.getBookByName(name);
+        if (book != null){
+            System.out.println(book.getInfoAboutBook());
+        } else {
+            System.out.printf("Book with name '%s' not found%n", name);
+        }
+    }
+
     @ShellMethod(value = "Add book", key = {"addBook"})
     public void addBook(String nameBook, Long author, Long genre){
         boolean result;
@@ -46,12 +54,8 @@ public class ApplicationShell {
     }
 
     @ShellMethod(value = "Update book", key = {"updateBook"})
-    public void updateBook(long bookId, String name, Long authorId, Long genreId){
-        Map<String, Object> params = new HashMap<>();
-        params.put("name", name);
-        params.put("authorId", authorId);
-        params.put("genreId", genreId);
-        bookService.updateBook(bookId, params);
+    public void updateBook(long bookId, String name, long authorId, long genreId){
+        bookService.updateBook(bookId, name, authorId, genreId);
     }
 
     @ShellMethod(value = "Delete book", key = {"rm", "deleteBook"})
