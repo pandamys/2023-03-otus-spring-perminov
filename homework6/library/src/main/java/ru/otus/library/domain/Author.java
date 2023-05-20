@@ -7,8 +7,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 
-import java.util.Objects;
-
 @Entity
 @Table(name = "authors")
 public class Author {
