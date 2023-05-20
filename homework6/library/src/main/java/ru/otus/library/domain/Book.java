@@ -13,6 +13,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.CascadeType;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,8 @@ public class Book {
     @JoinColumn(name="genre_id")
     private Genre genre;
 
+    @Fetch(FetchMode.SELECT)
+    @BatchSize(size = 5)
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "book")
     @Column(name="comment_id")
     private List<CommentBook> comments;
