@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Import;
 import ru.otus.library.domain.Book;
 import ru.otus.library.domain.CommentBook;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,13 +28,23 @@ public class CommentBookDaoJpaTest {
     @DisplayName("Test get comment by id")
     @Test
     public void testGetCommentById(){
-        Book book;
         CommentBook expectedComment, actualComment;
 
         expectedComment = em.find(CommentBook.class, 1);
 
         actualComment = commentBookDao.getById(expectedComment.getId());
         assertThat(actualComment).usingRecursiveComparison().isEqualTo(expectedComment);
+    }
+
+    @DisplayName("Test get all comments")
+    @Test
+    public void testGetAllComments(){
+        List<CommentBook> actualComments, expectedComments;
+        actualComments = commentBookDao.getAll();
+        expectedComments = em.getEntityManager()
+                .createQuery("select cb from CommentBook cb", CommentBook.class)
+                .getResultList();
+        assertThat(actualComments).containsOnlyOnceElementsOf(expectedComments);
     }
 
     @DisplayName("Test add new comment")

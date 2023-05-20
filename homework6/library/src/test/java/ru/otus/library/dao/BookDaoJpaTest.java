@@ -8,7 +8,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.library.domain.Author;
 import ru.otus.library.domain.Book;
+import ru.otus.library.domain.CommentBook;
 import ru.otus.library.domain.Genre;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -31,6 +34,17 @@ public class BookDaoJpaTest {
         expectedBook = em.find(Book.class, 1);
         actualBook = bookDao.getById(expectedBook.getId());
         assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook);
+    }
+
+    @DisplayName("Test get all books")
+    @Test
+    public void testGetAllBooks(){
+        List<Book> actualBooks, expectedBooks;
+        actualBooks = bookDao.getAll();
+        expectedBooks = em.getEntityManager()
+                .createQuery("select b from Book b", Book.class)
+                .getResultList();
+        assertThat(actualBooks).containsOnlyOnceElementsOf(expectedBooks);
     }
 
     @DisplayName("Test add new book")
