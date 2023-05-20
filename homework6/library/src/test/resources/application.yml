@@ -5,3 +5,10 @@ spring:
     init:
       mode: always
       data-locations: data.sql
+
+  jpa:
+      generate-ddl: true
+      hibernate:
+        ddl-auto: create
+
+      defer-datasource-initialization: true

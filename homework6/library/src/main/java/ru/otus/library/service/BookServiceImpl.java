@@ -60,7 +60,7 @@ public class BookServiceImpl implements BookService {
             return false;
         } else {
             book = new Book(name, author, genre);
-            bookDao.insert(book);
+            bookDao.save(book);
             return true;
         }
     }
@@ -87,7 +87,7 @@ public class BookServiceImpl implements BookService {
                 book.setGenre(genre);
             }
         }
-        bookDao.update(book);
+        bookDao.save(book);
     }
 
     @Override

@@ -7,13 +7,11 @@ import java.util.List;
 public interface CommentBookDao {
     CommentBook getById(long id);
 
-    List<CommentBook> getComments(Book book);
+    List<CommentBook> getAll(Book book);
 
     List<CommentBook> getAll();
 
-    CommentBook insertCommentBook(CommentBook comment);
+    CommentBook save(CommentBook comment);
 
-    void updateCommentBook(CommentBook comment);
-
-    void deleteCommentBook(long id);
+    void deleteById(long id);
 }

@@ -31,7 +31,7 @@ public class CommentBookDaoJpa implements CommentBookDao {
     }
 
     @Override
-    public List<CommentBook> getComments(Book book) {
+    public List<CommentBook> getAll(Book book) {
         TypedQuery<CommentBook> query;
         query = em.createQuery("select cb from CommentBook cb where cb.id = :id", CommentBook.class);
         query.setParameter("id", book.getId());
@@ -48,7 +48,7 @@ public class CommentBookDaoJpa implements CommentBookDao {
     }
 
     @Override
-    public CommentBook insertCommentBook(CommentBook comment) {
+    public CommentBook save(CommentBook comment) {
         if (comment.getId() <= 0){
             em.persist(comment);
             return comment;
@@ -58,19 +58,7 @@ public class CommentBookDaoJpa implements CommentBookDao {
     }
 
     @Override
-    public void updateCommentBook(CommentBook comment) {
-        Query query;
-        query = em.createQuery("update CommentBook cb " +
-                "set cb.text = :text," +
-                "cb.book = :book " +
-                "where cb.id = :id");
-        query.setParameter("text", comment.getText());
-        query.setParameter("book", comment.getBook());
-        query.setParameter("id", comment.getId());
-    }
-
-    @Override
-    public void deleteCommentBook(long id) {
+    public void deleteById(long id) {
         Query query;
         query = em.createQuery("delete " +
                 "from CommentBook cb " +

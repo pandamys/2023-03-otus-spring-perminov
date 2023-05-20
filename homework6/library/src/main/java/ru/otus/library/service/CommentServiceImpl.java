@@ -36,7 +36,7 @@ public class CommentServiceImpl implements CommentService {
         if (book == null) {
             return Collections.emptyList();
         }
-        return commentBookDao.getComments(book);
+        return commentBookDao.getAll(book);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class CommentServiceImpl implements CommentService {
         book = bookDao.getById(bookId);
         if (book != null){
             commentBook = new CommentBook(text, book);
-            commentBookDao.insertCommentBook(commentBook);
+            commentBookDao.save(commentBook);
             return true;
         }
         return false;
@@ -74,7 +74,7 @@ public class CommentServiceImpl implements CommentService {
                 commentBook.setBook(book);
             }
         }
-        commentBookDao.updateCommentBook(commentBook);
+        commentBookDao.save(commentBook);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class CommentServiceImpl implements CommentService {
         if (commentBook == null){
             return false;
         }
-        commentBookDao.deleteCommentBook(id);
+        commentBookDao.deleteById(id);
         return true;
     }
 }

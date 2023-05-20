@@ -10,9 +10,7 @@ public interface BookDao {
 
     Book getByName(String name);
 
-    Book insert(Book book);
-
-    void update(Book book);
+    Book save(Book book);
 
     void deleteById(long id);
 }

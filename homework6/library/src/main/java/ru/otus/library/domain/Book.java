@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.CascadeType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -55,6 +56,7 @@ public class Book {
         this.name = name;
         this.author = author;
         this.genre = genre;
+        this.comments = new ArrayList<>();
     }
 
     public long getId() {
@@ -90,7 +92,12 @@ public class Book {
     }
 
     public void setComments(CommentBook comment) {
-        this.comments.add(comment);
+        if (comments != null) {
+            this.comments.add(comment);
+        } else {
+            comments = new ArrayList<>();
+            comments.add(comment);
+        }
     }
 
     public String getInfoAboutBook(){

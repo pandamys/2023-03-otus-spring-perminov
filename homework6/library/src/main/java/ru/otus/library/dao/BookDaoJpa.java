@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class BookDaoJpa implements BookDao{
+public class BookDaoJpa implements BookDao {
     @PersistenceContext
     private final EntityManager em;
 
@@ -49,26 +49,13 @@ public class BookDaoJpa implements BookDao{
     }
 
     @Override
-    public Book insert(Book book) {
+    public Book save(Book book) {
         if (book.getId() <= 0){
             em.persist(book);
             return book;
         } else {
             return em.merge(book);
         }
-    }
-
-    @Override
-    public void update(Book book) {
-        Query query;
-        query = em.createQuery("update Book b " +
-                "set b.name = :name," +
-                "b.author = :author, " +
-                "b.genre = :genre " +
-                "where b.id = :id");
-        query.setParameter("name", book.getName());
-        query.setParameter("author", book.getAuthor());
-        query.setParameter("genre", book.getGenre());
     }
 
     @Override

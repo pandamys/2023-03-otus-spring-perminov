@@ -3,34 +3,32 @@ package ru.otus.library.dao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.library.domain.Author;
 import ru.otus.library.domain.Book;
 import ru.otus.library.domain.Genre;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@JdbcTest
-@Import(BookDaoJdbc.class)
-public class BookDaoJdbcTest {
+@DisplayName("Репозиторий на основе Jpa для работы с книгами ")
+@DataJpaTest
+@Import(BookDaoJpa.class)
+public class BookDaoJpaTest {
+    @Autowired
+    private TestEntityManager em;
 
     @Autowired
-    private BookDaoJdbc bookDao;
+    private BookDaoJpa bookDao;
 
     @DisplayName("Test get book by id")
     @Test
     public void testGetBookById(){
-        Author author;
-        Genre genre;
         Book expectedBook, actualBook;
-
-        author = new Author(2, "Tester", "Testerov");
-        genre = new Genre(1, "Test_Genre");
-        expectedBook = new Book(2, "TestBook2", author, genre);
-
+        expectedBook = em.find(Book.class, 1);
         actualBook = bookDao.getById(expectedBook.getId());
         assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook);
     }
@@ -42,24 +40,23 @@ public class BookDaoJdbcTest {
         Genre genre;
         Book expectedBook, actualBook;
 
-        author = new Author(1, "Test", "Testov");
-        genre = new Genre(1, "Test_Genre");
+        author = em.find(Author.class, 1);
+        genre = em.find(Genre.class, 1);
         expectedBook = new Book(3, "TestBook3", author, genre);
 
-        bookDao.insert(expectedBook);
+        bookDao.save(expectedBook);
         actualBook = bookDao.getById(expectedBook.getId());
-        assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook);
+        assertThat(actualBook).isNotNull().usingRecursiveComparison().isEqualTo(expectedBook);
     }
 
     @DisplayName("Test delete book")
     @Test
     public void testDeleteBook(){
         long workId = 2;
-
-        assertThatCode(() -> bookDao.getById(workId))
-                .doesNotThrowAnyException();
+        Book expectedBook = em.find(Book.class, workId);
 
         bookDao.deleteById(workId);
+        em.detach(expectedBook);
 
         assertNull(bookDao.getById(workId));
     }
@@ -67,17 +64,16 @@ public class BookDaoJdbcTest {
     @DisplayName("Test update name book")
     @Test
     public void testUpdateNameBook(){
-        Author author;
-        Genre genre;
         Book expectedBook, actualBook;
         String newBookName = "Test book new";
+        long workId = 1;
 
-        author = new Author(1, "Test", "Testov");
-        genre = new Genre(1, "Test_Genre");
-        expectedBook = new Book(1, newBookName, author, genre);
+        expectedBook = em.find(Book.class, workId);
+        expectedBook.setName(newBookName);
+        em.detach(expectedBook);
+        bookDao.save(expectedBook);
 
-        bookDao.update(expectedBook);
-        actualBook = bookDao.getById(expectedBook.getId());
-        assertEquals(actualBook.getName(), newBookName);
+        actualBook = em.find(Book.class, workId);
+        assertEquals(newBookName, actualBook.getName());
     }
 }
