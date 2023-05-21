@@ -1,5 +1,6 @@
 package ru.otus.library.dao;
 
+import jakarta.persistence.TypedQuery;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,30 @@ public class CommentBookDaoJpaTest {
                 .createQuery("select cb from CommentBook cb", CommentBook.class)
                 .getResultList();
         assertThat(actualComments).containsOnlyOnceElementsOf(expectedComments);
+    }
+
+    @DisplayName("Test comments for book")
+    @Test
+    public void testCommentsForBook(){
+        Book book1, book2;
+        book1 = em.find(Book.class, 1);
+        book2 = em.find(Book.class, 2);
+        List<CommentBook> actualComments, expectedComments1, expectedComments2;
+        TypedQuery<CommentBook> query;
+
+        query = em.getEntityManager()
+                .createQuery("select cb from CommentBook cb where cb.book = :id", CommentBook.class);
+        query.setParameter("id", book1);
+        expectedComments1 = query.getResultList();
+        actualComments = commentBookDao.getAll(book1);
+
+        assertThat(actualComments).containsOnlyOnceElementsOf(expectedComments1);
+
+        query.setParameter("id", book2);
+        expectedComments2 = query.getResultList();
+        actualComments = commentBookDao.getAll(book2);
+
+        assertThat(actualComments).containsOnlyOnceElementsOf(expectedComments2);
     }
 
     @DisplayName("Test add new comment")
