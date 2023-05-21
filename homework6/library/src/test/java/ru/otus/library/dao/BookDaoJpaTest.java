@@ -69,7 +69,7 @@ public class BookDaoJpaTest {
         long workId = 2;
         Book expectedBook = em.find(Book.class, workId);
 
-        bookDao.deleteById(workId);
+        bookDao.remove(expectedBook);
         em.detach(expectedBook);
 
         assertNull(bookDao.getById(workId));

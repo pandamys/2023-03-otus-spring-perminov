@@ -98,7 +98,7 @@ public class BookServiceImpl implements BookService {
         if (book == null){
             return false;
         } else {
-            bookDao.deleteById(id);
+            bookDao.remove(book);
             return true;
         }
     }

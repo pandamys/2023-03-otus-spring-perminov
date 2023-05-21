@@ -13,5 +13,5 @@ public interface CommentBookDao {
 
     CommentBook save(CommentBook comment);
 
-    void deleteById(long id);
+    void remove(CommentBook comment);
 }

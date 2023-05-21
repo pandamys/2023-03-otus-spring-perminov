@@ -59,12 +59,12 @@ public class BookDaoJpa implements BookDao {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void remove(Book book) {
         Query query;
         query = em.createQuery("delete " +
                 "from Book b " +
                 "where b.id = :id");
-        query.setParameter("id", id);
+        query.setParameter("id", book.getId());
         query.executeUpdate();
     }
 

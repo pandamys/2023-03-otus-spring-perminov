@@ -85,7 +85,7 @@ public class CommentServiceImpl implements CommentService {
         if (commentBook == null){
             return false;
         }
-        commentBookDao.deleteById(id);
+        commentBookDao.remove(commentBook);
         return true;
     }
 }

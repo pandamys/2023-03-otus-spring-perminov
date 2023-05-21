@@ -80,11 +80,11 @@ public class CommentBookDaoJpaTest {
     @DisplayName("Test delete comment")
     @Test
     public void testDeleteBook(){
-        long workId = 2;
-        Book expectedBook = em.find(Book.class, workId);
+        long workId = 1;
+        CommentBook expectedComment = em.find(CommentBook.class, workId);
 
-        commentBookDao.deleteById(workId);
-        em.detach(expectedBook);
+        commentBookDao.remove(expectedComment);
+        em.detach(expectedComment);
 
         assertNull(commentBookDao.getById(workId));
     }
