@@ -4,11 +4,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.EntityGraph;
 import jakarta.persistence.TypedQuery;
-import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
 import ru.otus.library.domain.Book;
 import ru.otus.library.domain.CommentBook;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +22,6 @@ public class CommentBookDaoJpa implements CommentBookDao {
 
     @Override
     public CommentBook getById(long id) {
-        EntityGraph<?> entityGraph;
         Map<String, Object> properties = new HashMap<>();
         properties.put("javax.persistence.fetchgraph", getEntityGraph());
         return em.find(CommentBook.class, id, properties);
@@ -59,12 +56,9 @@ public class CommentBookDaoJpa implements CommentBookDao {
 
     @Override
     public void remove(CommentBook comment) {
-        Query query;
-        query = em.createQuery("delete " +
-                "from CommentBook cb " +
-                "where cb.id = :id");
-        query.setParameter("id", comment.getId());
-        query.executeUpdate();
+        if (em.contains(comment)){
+            em.remove(comment);
+        }
     }
 
     private EntityGraph<?> getEntityGraph() {

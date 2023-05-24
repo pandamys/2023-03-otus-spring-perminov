@@ -4,10 +4,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.EntityGraph;
 import jakarta.persistence.TypedQuery;
-import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
 import ru.otus.library.domain.Book;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,16 +21,15 @@ public class BookDaoJpa implements BookDao {
 
     @Override
     public Book getById(long id) {
-        EntityGraph<?> entityGraph;
         Map<String, Object> properties = new HashMap<>();
-        properties.put("javax.persistence.fetchgraph", getEntityGraph());
+        properties.put("javax.persistence.fetchgraph", getExtendEntityGraph());
         return em.find(Book.class, id, properties);
     }
 
     @Override
     public List<Book> getAll() {
         TypedQuery<Book> query;
-        query = em.createQuery("select b from Book b ",
+        query = em.createQuery("select b from Book b left join fetch b.comments",
                 Book.class);
         query.setHint("javax.persistence.fetchgraph", getEntityGraph());
         return query.getResultList();
@@ -60,15 +57,18 @@ public class BookDaoJpa implements BookDao {
 
     @Override
     public void remove(Book book) {
-        Query query;
-        query = em.createQuery("delete " +
-                "from Book b " +
-                "where b.id = :id");
-        query.setParameter("id", book.getId());
-        query.executeUpdate();
+        if (em.contains(book)) {
+            em.remove(book);
+        }
     }
 
     private EntityGraph<?> getEntityGraph() {
+        EntityGraph<?> entityGraph;
+        entityGraph = em.getEntityGraph("lib-book-author-genre-eg");
+        return entityGraph;
+    }
+
+    private EntityGraph<?> getExtendEntityGraph() {
         EntityGraph<?> entityGraph;
         entityGraph = em.getEntityGraph("lib-book-author-genre-comments-eg");
         return entityGraph;

@@ -14,3 +14,5 @@ insert into books (`name`, `author_id`, `genre_id`) values ('Master and Margarit
 insert into books (`name`, `author_id`, `genre_id`) values ('Arial', 1, 1);
 
 insert into comments (`text`, `book_id`) values ('Cool book', 1);
+insert into comments (`text`, `book_id`) values ('Interesting book', 1);
+insert into comments (`text`, `book_id`) values ('Bad book', 2);

@@ -8,11 +8,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.library.domain.Author;
 import ru.otus.library.domain.Book;
-import ru.otus.library.domain.CommentBook;
 import ru.otus.library.domain.Genre;
-
 import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -63,18 +60,6 @@ public class BookDaoJpaTest {
         assertThat(actualBook).isNotNull().usingRecursiveComparison().isEqualTo(expectedBook);
     }
 
-    @DisplayName("Test delete book")
-    @Test
-    public void testDeleteBook(){
-        long workId = 2;
-        Book expectedBook = em.find(Book.class, workId);
-
-        bookDao.remove(expectedBook);
-        em.detach(expectedBook);
-
-        assertNull(bookDao.getById(workId));
-    }
-
     @DisplayName("Test update name book")
     @Test
     public void testUpdateNameBook(){
@@ -89,5 +74,18 @@ public class BookDaoJpaTest {
 
         actualBook = em.find(Book.class, workId);
         assertEquals(newBookName, actualBook.getName());
+    }
+
+    @DisplayName("Test delete book")
+    @Test
+    public void testDeleteBook(){
+        long workId = 2;
+        Book expectedBook, actualBook;
+        expectedBook = em.find(Book.class, workId);
+        assertThat(expectedBook).isNotNull();
+        bookDao.remove(expectedBook);
+        em.flush();
+        actualBook = em.find(Book.class, workId);
+        assertNull(actualBook);
     }
 }

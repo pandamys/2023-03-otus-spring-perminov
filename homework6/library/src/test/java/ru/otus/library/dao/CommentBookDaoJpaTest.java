@@ -74,7 +74,7 @@ public class CommentBookDaoJpaTest {
 
     @DisplayName("Test add new comment")
     @Test
-    public void testAddBook(){
+    public void testAddComment(){
         Book book;
         CommentBook expectedComment, actualComment;
 
@@ -88,7 +88,7 @@ public class CommentBookDaoJpaTest {
 
     @DisplayName("Test update comment")
     @Test
-    public void testUpdateNameBook(){
+    public void testUpdateNameComment(){
         CommentBook expectedComment, actualComment;
         String newTextComment = "Test comment updated";
         long workId = 1;
@@ -104,13 +104,16 @@ public class CommentBookDaoJpaTest {
 
     @DisplayName("Test delete comment")
     @Test
-    public void testDeleteBook(){
+    public void testDeleteComment(){
         long workId = 1;
-        CommentBook expectedComment = em.find(CommentBook.class, workId);
+        CommentBook expectedComment, actualComment;
+        expectedComment = em.find(CommentBook.class, workId);
 
         commentBookDao.remove(expectedComment);
-        em.detach(expectedComment);
+        em.flush();
+        actualComment = em.find(CommentBook.class, workId);
 
-        assertNull(commentBookDao.getById(workId));
+
+        assertNull(actualComment);
     }
 }
