@@ -31,14 +31,10 @@ public class BookServiceImpl implements BookService {
         return bookDao.getById(id);
     }
 
-    @Override
-    @Transactional(readOnly = true)
     public Book getBookByName(String name) {
         return bookDao.getByName(name);
     }
 
-    @Override
-    @Transactional(readOnly = true)
     public List<Book> getAllBooks() {
         return bookDao.getAll();
     }
