@@ -22,16 +22,15 @@ public class BookDaoJpa implements BookDao {
     @Override
     public Book getById(long id) {
         Map<String, Object> properties = new HashMap<>();
-        properties.put("javax.persistence.fetchgraph", getExtendEntityGraph());
+        properties.put("javax.persistence.fetchgraph", getEntityGraph());
         return em.find(Book.class, id, properties);
     }
 
     @Override
     public List<Book> getAll() {
         TypedQuery<Book> query;
-        query = em.createQuery("select b from Book b left join fetch b.comments",
+        query = em.createQuery("select b from Book b",
                 Book.class);
-        query.setHint("javax.persistence.fetchgraph", getEntityGraph());
         return query.getResultList();
     }
 
@@ -63,12 +62,6 @@ public class BookDaoJpa implements BookDao {
     }
 
     private EntityGraph<?> getEntityGraph() {
-        EntityGraph<?> entityGraph;
-        entityGraph = em.getEntityGraph("lib-book-author-genre-eg");
-        return entityGraph;
-    }
-
-    private EntityGraph<?> getExtendEntityGraph() {
         EntityGraph<?> entityGraph;
         entityGraph = em.getEntityGraph("lib-book-author-genre-comments-eg");
         return entityGraph;

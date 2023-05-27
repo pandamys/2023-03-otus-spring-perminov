@@ -21,29 +21,29 @@ public class ApplicationShell {
         this.commentService = commentService;
     }
 
-    @ShellMethod(value = "Get all books", key = {"listBooks"})
+    @ShellMethod(value = "Get all books", key = {"listBooks", "lB"})
     public void getAllBooks(){
         List<Book> books = bookService.getAllBooks();
         books.forEach(book -> System.out.println(book.getInfoAboutBook()));
     }
 
-    @ShellMethod(value = "Get book", key = {"getBook"})
+    @ShellMethod(value = "Get book", key = {"getBook", "gB"})
     public void getBook(long id){
         Book book;
         book = bookService.getBookById(id);
         if (book != null) {
-            System.out.println(book.getInfoAboutBook());
+            System.out.println(book.getInfoAboutBookWithComment());
         } else {
             System.out.printf("Book with id '%s' not found%n", id);
         }
     }
 
-    @ShellMethod(value = "Get book by name", key = {"getBookName"})
+    @ShellMethod(value = "Get book by name", key = {"getBookName", "gBN"})
     public void getBookByName(String name){
         Book book;
         book = bookService.getBookByName(name);
         if (book != null){
-            System.out.println(book.getInfoAboutBook());
+            System.out.println(book.getInfoAboutBookWithComment());
         } else {
             System.out.printf("Book with name '%s' not found%n", name);
         }

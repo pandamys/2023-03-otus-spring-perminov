@@ -22,8 +22,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "books")
-@NamedEntityGraph(name = "lib-book-author-genre-eg",
-        attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre")})
 @NamedEntityGraph(name = "lib-book-author-genre-comments-eg",
         attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre"), @NamedAttributeNode("comments")})
 public class Book {
@@ -108,7 +106,12 @@ public class Book {
     }
 
     public String getInfoAboutBook(){
-        return String.format("Book: ([id: %d]-[name: %s]-[author: %s]-[genre: %s]-[comments: %s]",
+        return String.format("Book: ([id: %d]-[name: %s]-[author: %s]-[genre: %s]",
+                id, name, author.getFullName(), genre.getName());
+    }
+
+    public String getInfoAboutBookWithComment(){
+        return String.format("Book: ([id: %d]-[name: %s]-[author: %s]-[genre: %s]-[comment: %s]",
                 id, name, author.getFullName(), genre.getName(), commentsBookToText());
     }
 

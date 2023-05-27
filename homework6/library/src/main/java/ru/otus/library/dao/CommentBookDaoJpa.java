@@ -22,25 +22,25 @@ public class CommentBookDaoJpa implements CommentBookDao {
 
     @Override
     public CommentBook getById(long id) {
+        EntityGraph<?> entityGraph;
+        entityGraph = em.getEntityGraph("lib-comment-book-eg");
         Map<String, Object> properties = new HashMap<>();
-        properties.put("javax.persistence.fetchgraph", getEntityGraph());
+        properties.put("javax.persistence.fetchgraph", entityGraph);
         return em.find(CommentBook.class, id, properties);
     }
 
     @Override
     public List<CommentBook> getAll(Book book) {
         TypedQuery<CommentBook> query;
-        query = em.createQuery("select cb from CommentBook cb where cb.book = :id", CommentBook.class);
+        query = em.createQuery("select cb from CommentBook cb left join fetch cb.book where cb.book = :id", CommentBook.class);
         query.setParameter("id", book);
-        query.setHint("javax.persistence.fetchgraph", getEntityGraph());
         return query.getResultList();
     }
 
     @Override
     public List<CommentBook> getAll(){
         TypedQuery<CommentBook> query;
-        query = em.createQuery("select cb from CommentBook cb", CommentBook.class);
-        query.setHint("javax.persistence.fetchgraph", getEntityGraph());
+        query = em.createQuery("select cb from CommentBook cb left join fetch cb.book ", CommentBook.class);
         return query.getResultList();
     }
 
@@ -59,11 +59,5 @@ public class CommentBookDaoJpa implements CommentBookDao {
         if (em.contains(comment)){
             em.remove(comment);
         }
-    }
-
-    private EntityGraph<?> getEntityGraph() {
-        EntityGraph<?> entityGraph;
-        entityGraph = em.getEntityGraph("lib-comment-book-eg");
-        return entityGraph;
     }
 }
