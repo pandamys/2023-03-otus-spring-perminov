@@ -2,41 +2,45 @@ package ru.otus.library.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.library.dao.AuthorDao;
-import ru.otus.library.dao.BookDao;
-import ru.otus.library.dao.GenreDao;
 import ru.otus.library.domain.Author;
 import ru.otus.library.domain.Book;
 import ru.otus.library.domain.Genre;
+import ru.otus.library.repository.AuthorsRepository;
+import ru.otus.library.repository.BooksRepository;
+import ru.otus.library.repository.GenreRepository;
+
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
-    private final BookDao bookDao;
+    private final BooksRepository booksRepository;
 
-    private final AuthorDao authorDao;
+    private final AuthorsRepository authorsRepository;
 
-    private final GenreDao genreDao;
+    private final GenreRepository genreRepository;
 
 
-    public BookServiceImpl(BookDao bookDao,
-                           AuthorDao authorDao,
-                           GenreDao genreDao) {
-        this.bookDao = bookDao;
-        this.authorDao = authorDao;
-        this.genreDao = genreDao;
+    public BookServiceImpl(BooksRepository booksRepository,
+                           AuthorsRepository authorsRepository,
+                           GenreRepository genreRepository) {
+        this.booksRepository = booksRepository;
+        this.authorsRepository = authorsRepository;
+        this.genreRepository = genreRepository;
     }
 
     public Book getBookById(long id) {
-        return bookDao.getById(id);
+        Optional<Book> book;
+        book = booksRepository.findById(id);
+        return book.orElse(null);
     }
 
     public Book getBookByName(String name) {
-        return bookDao.getByName(name);
+        return booksRepository.findByName(name);
     }
 
     public List<Book> getAllBooks() {
-        return bookDao.getAll();
+        return booksRepository.findAll();
     }
 
     @Override
@@ -45,16 +49,16 @@ public class BookServiceImpl implements BookService {
                            Long authorId,
                            Long genreId) {
         Book book;
-        Author author;
-        Genre genre;
+        Optional<Author> author;
+        Optional<Genre> genre;
 
-        author = authorDao.getById(authorId);
-        genre = genreDao.getById(genreId);
-        if (author == null || genre == null){
+        author = authorsRepository.findById(authorId);
+        genre = genreRepository.findById(genreId);
+        if (author.isEmpty() || genre.isEmpty()) {
             return false;
         } else {
-            book = new Book(name, author, genre);
-            bookDao.save(book);
+            book = new Book(name, author.get(), genre.get());
+            booksRepository.save(book);
             return true;
         }
     }
@@ -62,26 +66,28 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void updateBook(long id, String name, long authorId, long genreId) {
+        Optional<Book> bookOptional;
         Book book;
-        Author author;
-        Genre genre;
-        book = bookDao.getById(id);
-        if (name != null){
-            book.setName(name);
-        }
-        if (authorId > 0){
-            author = authorDao.getById(authorId);
-            if (author != null){
-                book.setAuthor(author);
+        Optional<Author> author;
+        Optional<Genre> genre;
+        bookOptional = booksRepository.findById(id);
+
+        if (bookOptional.isPresent()) {
+            book = bookOptional.get();
+            if (name != null) {
+                book.setName(name);
             }
-        }
-        if (genreId > 0){
-            genre = genreDao.getById(genreId);
-            if (genre != null){
-                book.setGenre(genre);
+            if (authorId > 0) {
+                author = authorsRepository.findById(authorId);
+                author.ifPresent(book::setAuthor);
             }
+            if (genreId > 0) {
+                genre = genreRepository.findById(genreId);
+                genre.ifPresent(book::setGenre);
+            }
+            booksRepository.save(book);
         }
-        bookDao.save(book);
+
     }
 
     @Override
@@ -92,7 +98,7 @@ public class BookServiceImpl implements BookService {
         if (book == null){
             return false;
         } else {
-            bookDao.remove(book);
+            booksRepository.delete(book);
             return true;
         }
     }

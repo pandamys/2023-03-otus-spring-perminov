@@ -2,52 +2,54 @@ package ru.otus.library.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.library.dao.BookDao;
-import ru.otus.library.dao.CommentBookDao;
 import ru.otus.library.domain.Book;
 import ru.otus.library.domain.CommentBook;
-
+import ru.otus.library.repository.BooksRepository;
+import ru.otus.library.repository.CommentsBookRepository;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommentServiceImpl implements CommentService {
-    private final CommentBookDao commentBookDao;
+    private final CommentsBookRepository commentsBookRepository;
 
-    private final BookDao bookDao;
+    private final BooksRepository booksRepository;
 
-    public CommentServiceImpl(CommentBookDao commentBookDao,
-                              BookDao bookDao) {
-        this.commentBookDao = commentBookDao;
-        this.bookDao = bookDao;
+    public CommentServiceImpl(CommentsBookRepository commentsBookRepository,
+                              BooksRepository booksRepository) {
+        this.commentsBookRepository = commentsBookRepository;
+        this.booksRepository = booksRepository;
     }
 
     public CommentBook getById(long id) {
-        return commentBookDao.getById(id);
+        Optional<CommentBook> comment;
+        comment = commentsBookRepository.findById(id);
+        return comment.orElse(null);
     }
 
     public List<CommentBook> getCommentsForBook(long bookId) {
-        Book book;
-        book = bookDao.getById(bookId);
-        if (book == null) {
+        Optional<Book> book;
+        book = booksRepository.findById(bookId);
+        if (book.isEmpty()) {
             return Collections.emptyList();
         }
-        return commentBookDao.getAll(book);
+        return commentsBookRepository.findByBook(book.get());
     }
 
     public List<CommentBook> getAll() {
-        return commentBookDao.getAll();
+        return commentsBookRepository.findAll();
     }
 
     @Override
     @Transactional
     public boolean addComment(String text, long bookId) {
-        Book book;
+        Optional<Book> book;
         CommentBook commentBook;
-        book = bookDao.getById(bookId);
-        if (book != null){
-            commentBook = new CommentBook(text, book);
-            commentBookDao.save(commentBook);
+        book = booksRepository.findById(bookId);
+        if (book.isPresent()){
+            commentBook = new CommentBook(text, book.get());
+            commentsBookRepository.save(commentBook);
             return true;
         }
         return false;
@@ -56,30 +58,29 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public void updateComment(long id, String text, long bookId) {
+        Optional<CommentBook> optionalCommentBook;
         CommentBook commentBook;
-        Book book;
-        commentBook = commentBookDao.getById(id);
-        if (text != null && !text.equals("")) {
+        Optional<Book> book;
+        optionalCommentBook = commentsBookRepository.findById(id);
+        if (optionalCommentBook.isPresent()) {
+            commentBook = optionalCommentBook.get();
+            if (text != null && !text.equals("")) {
                 commentBook.setText(text);
-        }
-        if (bookId > 0) {
-            book = bookDao.getById(bookId);
-            if (book != null) {
-                commentBook.setBook(book);
             }
+            if (bookId > 0) {
+                book = booksRepository.findById(bookId);
+                book.ifPresent(commentBook::setBook);
+            }
+            commentsBookRepository.save(commentBook);
         }
-        commentBookDao.save(commentBook);
     }
 
     @Override
     @Transactional
     public boolean removeComment(long id) {
-        CommentBook commentBook;
-        commentBook = commentBookDao.getById(id);
-        if (commentBook == null){
-            return false;
-        }
-        commentBookDao.remove(commentBook);
+        Optional<CommentBook> commentBook;
+        commentBook = commentsBookRepository.findById(id);
+        commentBook.ifPresent(commentsBookRepository::delete);
         return true;
     }
 }

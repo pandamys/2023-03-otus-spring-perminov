@@ -7,12 +7,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.otus.library.dao.AuthorDao;
-import ru.otus.library.dao.BookDao;
-import ru.otus.library.dao.GenreDao;
 import ru.otus.library.domain.Author;
 import ru.otus.library.domain.Book;
 import ru.otus.library.domain.Genre;
+import ru.otus.library.repository.AuthorsRepository;
+import ru.otus.library.repository.BooksRepository;
+import ru.otus.library.repository.GenreRepository;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -20,38 +22,39 @@ import static org.assertj.core.api.Assertions.*;
 public class BookServiceImplTest {
     private BookService bookService;
     @MockBean
-    private BookDao bookDaoMock;
+    private BooksRepository booksRepositoryMock;
     @MockBean
-    private AuthorDao authorDaoMock;
+    private AuthorsRepository authorsRepositoryMock;
     @MockBean
-    private GenreDao genreDaoMock;
+    private GenreRepository genreRepositoryMock;
 
     @BeforeEach
     public void setUp() {
-        bookService = new BookServiceImpl(bookDaoMock, authorDaoMock, genreDaoMock);
+        bookService = new BookServiceImpl(booksRepositoryMock, authorsRepositoryMock, genreRepositoryMock);
     }
 
     @DisplayName("Test get book")
     @Test
     public void testGetBook(){
-        Book expectedBook, actualBook;
+        Optional<Book> expectedBook;
+        Book actualBook;
 
-        expectedBook = getTestBook();
-        Mockito.when(bookDaoMock.getById(expectedBook.getId())).thenReturn(expectedBook);
-        actualBook = bookService.getBookById(expectedBook.getId());
+        expectedBook = Optional.of(getTestBook());
+        Mockito.when(booksRepositoryMock.findById(expectedBook.get().getId())).thenReturn(expectedBook);
+        actualBook = bookService.getBookById(expectedBook.get().getId());
 
-        assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook);
+        assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook.get());
     }
 
     @DisplayName("Test remove book")
     @Test
     public void testRemoveBook(){
-        Book expectedBook;
+        Optional<Book> expectedBook;
         boolean actualResult;
 
-        expectedBook = getTestBook();
-        Mockito.when(bookDaoMock.getById(expectedBook.getId())).thenReturn(expectedBook);
-        actualResult = bookService.removeBook(expectedBook.getId());
+        expectedBook = Optional.of(getTestBook());
+        Mockito.when(booksRepositoryMock.findById(expectedBook.get().getId())).thenReturn(expectedBook);
+        actualResult = bookService.removeBook(expectedBook.get().getId());
         Assertions.assertThat(actualResult).isEqualTo(true);
     }
 
