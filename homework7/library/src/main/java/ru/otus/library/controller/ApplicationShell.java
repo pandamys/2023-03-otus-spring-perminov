@@ -21,29 +21,29 @@ public class ApplicationShell {
         this.commentService = commentService;
     }
 
-    @ShellMethod(value = "Get all books", key = {"listBooks"})
+    @ShellMethod(value = "Get all books", key = {"listBooks", "lb"})
     public void getAllBooks(){
         List<Book> books = bookService.getAllBooks();
         books.forEach(book -> System.out.println(book.getInfoAboutBook()));
     }
 
-    @ShellMethod(value = "Get book", key = {"getBook"})
+    @ShellMethod(value = "Get book", key = {"getBook", "gb"})
     public void getBook(long id){
         Book book;
         book = bookService.getBookById(id);
         if (book != null) {
-            System.out.println(book.getInfoAboutBook());
+            System.out.println(book.getInfoAboutBookWithComments());
         } else {
             System.out.printf("Book with id '%s' not found%n", id);
         }
     }
 
-    @ShellMethod(value = "Get book by name", key = {"getBookName"})
+    @ShellMethod(value = "Get book by name", key = {"getBookName", "gbn"})
     public void getBookByName(String name){
         Book book;
         book = bookService.getBookByName(name);
         if (book != null){
-            System.out.println(book.getInfoAboutBook());
+            System.out.println(book.getInfoAboutBookWithComments());
         } else {
             System.out.printf("Book with name '%s' not found%n", name);
         }
@@ -76,7 +76,7 @@ public class ApplicationShell {
         }
     }
 
-    @ShellMethod(value = "Get comment by id", key = {"getComment"})
+    @ShellMethod(value = "Get comment by id", key = {"getComment", "gc"})
     public void getComment(long commentId){
         CommentBook comment;
         comment = commentService.getById(commentId);
@@ -87,7 +87,7 @@ public class ApplicationShell {
         }
     }
 
-    @ShellMethod(value = "Get comment by book", key = {"getCommentBook"})
+    @ShellMethod(value = "Get comment by book", key = {"getCommentBook", "gcb"})
     public void getCommentByBook(long bookId){
         List<CommentBook> comments;
         comments = commentService.getCommentsForBook(bookId);

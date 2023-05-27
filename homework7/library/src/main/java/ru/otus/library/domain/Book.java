@@ -6,8 +6,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
-import jakarta.persistence.NamedEntityGraph;
-import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -104,6 +102,11 @@ public class Book {
     }
 
     public String getInfoAboutBook(){
+        return String.format("Book: ([id: %d]-[name: %s]-[author: %s]-[genre: %s]",
+                id, name, author.getFullName(), genre.getName());
+    }
+
+    public String getInfoAboutBookWithComments(){
         return String.format("Book: ([id: %d]-[name: %s]-[author: %s]-[genre: %s]-[comments: %s]",
                 id, name, author.getFullName(), genre.getName(), commentsBookToText());
     }

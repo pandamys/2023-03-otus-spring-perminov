@@ -27,7 +27,7 @@ public class CommentBook {
     @Column(name = "text")
     private String text;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name="book_id")
     private Book book;
@@ -66,6 +66,6 @@ public class CommentBook {
     }
 
     public void printComment(){
-        System.out.printf("[id: %s][Text: %s][Book: %s]", id, text, book.getName());
+        System.out.printf("[id: %s][Text: %s][Book: %s]\n", id, text, book.getName());
     }
 }
