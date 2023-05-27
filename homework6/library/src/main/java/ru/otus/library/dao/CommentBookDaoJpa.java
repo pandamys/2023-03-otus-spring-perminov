@@ -32,7 +32,8 @@ public class CommentBookDaoJpa implements CommentBookDao {
     @Override
     public List<CommentBook> getAll(Book book) {
         TypedQuery<CommentBook> query;
-        query = em.createQuery("select cb from CommentBook cb left join fetch cb.book where cb.book = :id", CommentBook.class);
+        query = em.createQuery(
+                "select cb from CommentBook cb left join fetch cb.book where cb.book = :id", CommentBook.class);
         query.setParameter("id", book);
         return query.getResultList();
     }
