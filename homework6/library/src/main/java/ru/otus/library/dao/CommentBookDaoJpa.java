@@ -2,14 +2,11 @@ package ru.otus.library.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.EntityGraph;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import ru.otus.library.domain.Book;
 import ru.otus.library.domain.CommentBook;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class CommentBookDaoJpa implements CommentBookDao {
