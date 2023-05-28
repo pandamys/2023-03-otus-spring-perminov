@@ -22,8 +22,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "books")
-@NamedEntityGraph(name = "lib-book-author-genre-comments-eg",
-        attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre"), @NamedAttributeNode("comments")})
+@NamedEntityGraph(name = "lib-book-author-genre-eg",
+        attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre")})
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

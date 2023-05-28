@@ -76,7 +76,7 @@ public class ApplicationShell {
         }
     }
 
-    @ShellMethod(value = "Get comment by id", key = {"getComment"})
+    @ShellMethod(value = "Get comment by id", key = {"getComment", "gc"})
     public void getComment(long commentId){
         CommentBook comment;
         comment = commentService.getById(commentId);
@@ -87,7 +87,7 @@ public class ApplicationShell {
         }
     }
 
-    @ShellMethod(value = "Get comment by book", key = {"getCommentBook"})
+    @ShellMethod(value = "Get comment by book", key = {"getCommentBook", "gcb"})
     public void getCommentByBook(long bookId){
         List<CommentBook> comments;
         comments = commentService.getCommentsForBook(bookId);

@@ -17,8 +17,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "comments")
-@NamedEntityGraph(name = "lib-comment-book-eg",
-        attributeNodes = {@NamedAttributeNode("book")})
 public class CommentBook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +25,7 @@ public class CommentBook {
     @Column(name = "text")
     private String text;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name="book_id")
     private Book book;

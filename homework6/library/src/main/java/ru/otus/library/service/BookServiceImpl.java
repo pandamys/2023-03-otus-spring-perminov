@@ -27,6 +27,7 @@ public class BookServiceImpl implements BookService {
         this.genreDao = genreDao;
     }
 
+    @Transactional(readOnly = true)
     public Book getBookById(long id) {
         return bookDao.getById(id);
     }

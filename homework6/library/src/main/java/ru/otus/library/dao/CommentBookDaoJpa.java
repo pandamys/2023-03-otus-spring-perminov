@@ -22,11 +22,7 @@ public class CommentBookDaoJpa implements CommentBookDao {
 
     @Override
     public CommentBook getById(long id) {
-        EntityGraph<?> entityGraph;
-        entityGraph = em.getEntityGraph("lib-comment-book-eg");
-        Map<String, Object> properties = new HashMap<>();
-        properties.put("javax.persistence.fetchgraph", entityGraph);
-        return em.find(CommentBook.class, id, properties);
+        return em.find(CommentBook.class, id);
     }
 
     @Override

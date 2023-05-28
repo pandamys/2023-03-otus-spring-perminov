@@ -26,6 +26,7 @@ public class CommentServiceImpl implements CommentService {
         return commentBookDao.getById(id);
     }
 
+    @Transactional(readOnly = true)
     public List<CommentBook> getCommentsForBook(long bookId) {
         Book book;
         book = bookDao.getById(bookId);
