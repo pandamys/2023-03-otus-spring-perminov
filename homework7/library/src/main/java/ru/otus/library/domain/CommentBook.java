@@ -10,7 +10,6 @@ import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;

@@ -29,16 +29,31 @@ public class BookServiceImpl implements BookService {
         this.genreRepository = genreRepository;
     }
 
+    @Transactional(readOnly = true)
     public Book getBookById(long id) {
-        Optional<Book> book;
-        book = booksRepository.findById(id);
-        return book.orElse(null);
+        Optional<Book> optionalBook;
+        Book book;
+        optionalBook = booksRepository.findById(id);
+        if (optionalBook.isPresent()){
+            book = optionalBook.orElse(null);
+            book.getComments().size();
+            return book;
+        } else {
+            return null;
+        }
     }
 
+    @Transactional(readOnly = true)
     public Book getBookByName(String name) {
-        return booksRepository.findByName(name);
+        Book book;
+        book = booksRepository.findByName(name);
+        if (book != null) {
+            book.getComments().size();
+        }
+        return book;
     }
 
+    @Transactional(readOnly = true)
     public List<Book> getAllBooks() {
         return booksRepository.findAll();
     }
