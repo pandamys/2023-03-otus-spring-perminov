@@ -29,7 +29,9 @@ public class BookServiceImpl implements BookService {
 
     @Transactional(readOnly = true)
     public Book getBookById(long id) {
-        return bookDao.getById(id);
+        Book book = bookDao.getById(id);
+        book.getComments().size();
+        return book;
     }
 
     public Book getBookByName(String name) {

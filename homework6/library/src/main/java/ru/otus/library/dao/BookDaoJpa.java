@@ -20,9 +20,7 @@ public class BookDaoJpa implements BookDao {
 
     @Override
     public Book getById(long id) {
-        Book book = em.find(Book.class, id);
-        book.getComments().size();
-        return book;
+        return em.find(Book.class, id);
     }
 
     @Override
