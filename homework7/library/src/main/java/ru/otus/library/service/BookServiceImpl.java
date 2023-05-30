@@ -53,7 +53,6 @@ public class BookServiceImpl implements BookService {
         return book;
     }
 
-    @Transactional(readOnly = true)
     public List<Book> getAllBooks() {
         return booksRepository.findAll();
     }
