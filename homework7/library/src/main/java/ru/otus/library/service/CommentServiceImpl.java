@@ -22,14 +22,12 @@ public class CommentServiceImpl implements CommentService {
         this.booksRepository = booksRepository;
     }
 
-    @Transactional(readOnly = true)
     public CommentBook getById(long id) {
         Optional<CommentBook> comment;
         comment = commentsBookRepository.findById(id);
         return comment.orElse(null);
     }
 
-    @Transactional(readOnly = true)
     public List<CommentBook> getCommentsForBook(long bookId) {
         Optional<Book> book;
         book = booksRepository.findById(bookId);
@@ -39,13 +37,11 @@ public class CommentServiceImpl implements CommentService {
         return commentsBookRepository.findByBook(book.get());
     }
 
-    @Transactional(readOnly = true)
     public List<CommentBook> getAll() {
         return commentsBookRepository.findAll();
     }
 
     @Override
-    @Transactional
     public boolean addComment(String text, long bookId) {
         Optional<Book> book;
         CommentBook commentBook;
@@ -59,7 +55,6 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Transactional
     public void updateComment(long id, String text, long bookId) {
         Optional<CommentBook> optionalCommentBook;
         CommentBook commentBook;
@@ -79,7 +74,6 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Transactional
     public boolean removeComment(long id) {
         Optional<CommentBook> commentBook;
         commentBook = commentsBookRepository.findById(id);

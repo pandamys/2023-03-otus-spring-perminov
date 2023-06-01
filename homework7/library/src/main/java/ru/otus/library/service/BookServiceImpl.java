@@ -58,7 +58,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional
     public boolean addBook(String name,
                            Long authorId,
                            Long genreId) {
@@ -78,7 +77,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional
     public void updateBook(long id, String name, long authorId, long genreId) {
         Optional<Book> bookOptional;
         Book book;
@@ -105,7 +103,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional
     public boolean removeBook(long id) {
         Book book;
         book = getBookById(id);
