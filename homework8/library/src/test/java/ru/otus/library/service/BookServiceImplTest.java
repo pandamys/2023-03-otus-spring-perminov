@@ -12,6 +12,7 @@ import ru.otus.library.domain.Book;
 import ru.otus.library.domain.Genre;
 import ru.otus.library.repository.AuthorsRepository;
 import ru.otus.library.repository.BooksRepository;
+import ru.otus.library.repository.CommentsBookRepository;
 import ru.otus.library.repository.GenreRepository;
 
 import java.util.Optional;
@@ -28,9 +29,12 @@ public class BookServiceImplTest {
     @MockBean
     private GenreRepository genreRepositoryMock;
 
+    @MockBean
+    private CommentsBookRepository commentsBookRepositoryMock;
+
     @BeforeEach
     public void setUp() {
-        bookService = new BookServiceImpl(booksRepositoryMock, authorsRepositoryMock, genreRepositoryMock);
+        bookService = new BookServiceImpl(booksRepositoryMock, authorsRepositoryMock, genreRepositoryMock, commentsBookRepositoryMock);
     }
 
     @DisplayName("Test get book")
@@ -40,7 +44,7 @@ public class BookServiceImplTest {
         Book actualBook;
 
         expectedBook = Optional.of(getTestBook());
-        Mockito.when(booksRepositoryMock.findByName(expectedBook.get().getId())).thenReturn(expectedBook);
+        Mockito.when(booksRepositoryMock.findById(expectedBook.get().getId())).thenReturn(expectedBook);
         actualBook = bookService.getBookById(expectedBook.get().getId());
 
         assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook.get());
@@ -63,9 +67,9 @@ public class BookServiceImplTest {
         Genre genre;
         Book book;
 
-        author = new Author(1, "Test", "Testov");
-        genre = new Genre(1, "Test_Genre");
-        book = new Book(1, "Test_Book", author, genre);
+        author = new Author("Test", "Testov");
+        genre = new Genre("Test_Genre");
+        book = new Book("Test_Book", author, genre);
         return book;
     }
 }

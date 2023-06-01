@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "comments")
 public class CommentBook {
     @Id
-    private long id;
+    private String id;
 
     private String text;
 
@@ -21,11 +21,11 @@ public class CommentBook {
         this.book = book;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -1,7 +1,6 @@
 package ru.otus.library.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.library.domain.Book;
 import ru.otus.library.domain.CommentBook;
 import ru.otus.library.repository.BooksRepository;
@@ -22,15 +21,13 @@ public class CommentServiceImpl implements CommentService {
         this.booksRepository = booksRepository;
     }
 
-    @Transactional(readOnly = true)
-    public CommentBook getById(long id) {
+    public CommentBook getById(String id) {
         Optional<CommentBook> comment;
         comment = commentsBookRepository.findById(id);
         return comment.orElse(null);
     }
 
-    @Transactional(readOnly = true)
-    public List<CommentBook> getCommentsForBook(long bookId) {
+    public List<CommentBook> getCommentsForBook(String bookId) {
         Optional<Book> book;
         book = booksRepository.findById(bookId);
         if (book.isEmpty()) {
@@ -39,14 +36,13 @@ public class CommentServiceImpl implements CommentService {
         return commentsBookRepository.findByBook(book.get());
     }
 
-    @Transactional(readOnly = true)
+    @Override
     public List<CommentBook> getAll() {
         return commentsBookRepository.findAll();
     }
 
     @Override
-    @Transactional
-    public boolean addComment(String text, long bookId) {
+    public boolean addComment(String text, String bookId) {
         Optional<Book> book;
         CommentBook commentBook;
         book = booksRepository.findById(bookId);
@@ -59,8 +55,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Transactional
-    public void updateComment(long id, String text, long bookId) {
+    public void updateComment(String id, String text, String bookId) {
         Optional<CommentBook> optionalCommentBook;
         CommentBook commentBook;
         Optional<Book> book;
@@ -70,7 +65,7 @@ public class CommentServiceImpl implements CommentService {
             if (text != null && !text.equals("")) {
                 commentBook.setText(text);
             }
-            if (bookId > 0) {
+            if (bookId != null) {
                 book = booksRepository.findById(bookId);
                 book.ifPresent(commentBook::setBook);
             }
@@ -79,8 +74,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Transactional
-    public boolean removeComment(long id) {
+    public boolean removeComment(String id) {
         Optional<CommentBook> commentBook;
         commentBook = commentsBookRepository.findById(id);
         commentBook.ifPresent(commentsBookRepository::delete);

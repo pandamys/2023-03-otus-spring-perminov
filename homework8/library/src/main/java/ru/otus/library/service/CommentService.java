@@ -5,15 +5,15 @@ import ru.otus.library.domain.CommentBook;
 import java.util.List;
 
 public interface CommentService {
-    CommentBook getById(long id);
+    CommentBook getById(String id);
 
-    List<CommentBook> getCommentsForBook(long bookId);
+    List<CommentBook> getCommentsForBook(String bookId);
 
     List<CommentBook> getAll();
 
-    boolean addComment(String text, long bookId);
+    boolean addComment(String text, String bookId);
 
-    void updateComment(long id, String text, long bookId);
+    void updateComment(String id, String text, String bookId);
 
-    boolean removeComment(long id);
+    boolean removeComment(String id);
 }

@@ -1,6 +1,7 @@
 package ru.otus.library.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -9,14 +10,17 @@ import java.util.List;
 @Document(collection = "books")
 public class Book {
     @Id
-    private long id;
+    private String id;
 
     private String name;
 
+    @DBRef
     private Author author;
 
+    @DBRef
     private Genre genre;
 
+    @DBRef
     private List<CommentBook> comments;
 
     public Book() {
@@ -29,7 +33,7 @@ public class Book {
         this.genre = genre;
     }
 
-    public Book(long id, String name, Author author, Genre genre) {
+    public Book(String id, String name, Author author, Genre genre) {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -37,7 +41,7 @@ public class Book {
         this.comments = new ArrayList<>();
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
@@ -78,13 +82,17 @@ public class Book {
         }
     }
 
+    public void setComments(List<CommentBook> comments) {
+        this.comments = comments;
+    }
+
     public String getInfoAboutBook(){
-        return String.format("Book: ([id: %d]-[name: %s]-[author: %s]-[genre: %s]",
+        return String.format("Book: ([id: %s]-[name: %s]-[author: %s]-[genre: %s]",
                 id, name, author.getFullName(), genre.getName());
     }
 
     public String getInfoAboutBookWithComments(){
-        return String.format("Book: ([id: %d]-[name: %s]-[author: %s]-[genre: %s]-[comments: %s]",
+        return String.format("Book: ([id: %s]-[name: %s]-[author: %s]-[genre: %s]-[comments: %s]",
                 id, name, author.getFullName(), genre.getName(), commentsBookToText());
     }
 

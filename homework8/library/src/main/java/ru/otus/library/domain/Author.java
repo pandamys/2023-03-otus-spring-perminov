@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "authors")
 public class Author {
     @Id
-    private long id;
+    private String id;
 
     private String name;
 
@@ -16,7 +16,13 @@ public class Author {
 
     }
 
-    public Author(long id,
+    public Author(String name,
+                  String surname){
+        this.name = name;
+        this.surname = surname;
+    }
+
+    public Author(String id,
                   String name,
                   String surname) {
         this.id = id;
@@ -24,7 +30,7 @@ public class Author {
         this.surname = surname;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
@@ -46,5 +52,9 @@ public class Author {
 
     public String getFullName(){
         return name + " " + surname;
+    }
+
+    public String getInfo(){
+        return String.format("[id=%s][Name=%s][Surname=%s]", id, name, surname);
     }
 }

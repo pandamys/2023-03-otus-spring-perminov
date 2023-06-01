@@ -6,6 +6,6 @@ import ru.otus.library.domain.CommentBook;
 
 import java.util.List;
 
-public interface CommentsBookRepository extends MongoRepository<CommentBook, Long> {
+public interface CommentsBookRepository extends MongoRepository<CommentBook, String> {
     List<CommentBook> findByBook(Book book);
 }
