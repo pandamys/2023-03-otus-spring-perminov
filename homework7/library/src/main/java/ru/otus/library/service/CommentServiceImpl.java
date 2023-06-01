@@ -22,12 +22,14 @@ public class CommentServiceImpl implements CommentService {
         this.booksRepository = booksRepository;
     }
 
+    @Override
     public CommentBook getById(long id) {
         Optional<CommentBook> comment;
         comment = commentsBookRepository.findById(id);
         return comment.orElse(null);
     }
 
+    @Override
     public List<CommentBook> getCommentsForBook(long bookId) {
         Optional<Book> book;
         book = booksRepository.findById(bookId);

@@ -29,6 +29,7 @@ public class BookServiceImpl implements BookService {
         this.genreRepository = genreRepository;
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Book getBookById(long id) {
         Optional<Book> optionalBook;
@@ -43,6 +44,7 @@ public class BookServiceImpl implements BookService {
         }
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Book getBookByName(String name) {
         Book book;
