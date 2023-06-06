@@ -1,7 +1,6 @@
 package ru.otus.library.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.library.domain.Book;
 import ru.otus.library.domain.CommentBook;
 import ru.otus.library.repository.BooksRepository;

@@ -9,11 +9,8 @@ spring:
       generate-ddl: true
       hibernate:
         ddl-auto: create
-
       properties:
         hibernate:
           format_sql: false
-
-      show-sql: true
-
+      show-sql: false
       defer-datasource-initialization: true
