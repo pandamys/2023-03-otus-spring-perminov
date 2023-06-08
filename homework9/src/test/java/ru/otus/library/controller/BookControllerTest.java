@@ -63,7 +63,7 @@ public class BookControllerTest {
     public void testGetBook() throws Exception {
         Book book = getTestBooks().get(0);
         Mockito.when(bookService.getBookById(Mockito.anyLong())).thenReturn(book);
-        String content = mvcMock.perform(get("/view/book")
+        String content = mvcMock.perform(get("/book/view")
                         .param("id", String.valueOf(book.getId())))
                         .andExpect(status().isOk())
                         .andReturn().getResponse().getContentAsString();
@@ -83,7 +83,7 @@ public class BookControllerTest {
 
         Mockito.when(bookService.addBook(Mockito.anyString(), Mockito.anyLong(), Mockito.anyLong())).thenReturn(true);
 
-        mvcMock.perform(post("/add/book")
+        mvcMock.perform(post("/book/add")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("name", nameNewBook)
                 .param("authorId", String.valueOf(authorId))
@@ -99,7 +99,7 @@ public class BookControllerTest {
 
         Mockito.when(bookService.removeBook(id)).thenReturn(true);
 
-        mvcMock.perform(get("/delete/book")
+        mvcMock.perform(get("/book/delete")
                 .param("id", String.valueOf(id)))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/books"));

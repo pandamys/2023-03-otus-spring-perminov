@@ -23,17 +23,17 @@
                 <tbody>
                     <tr th:each="book : ${books}" th:object="${book}" >
                         <td th:text="*{id}">100</td>
-                        <td><a href="#" th:text="*{name}" th:href="@{/view/book(id=*{id})}">Test</a></td>
+                        <td><a href="#" th:text="*{name}" th:href="@{/book/view(id=*{id})}">Test</a></td>
                         <td th:text="*{author.name} + ' ' + *{author.surname}">Test Testov</td>
                         <td th:text="*{genre.name}">Test genre</td>
-                        <td class="action"><a href="#" th:href="@{/edit/book(id=*{id})}">edit</a></td>
-                        <td class="action"><a href="#" th:href="@{/delete/book(id=*{id})}" th:method="delete">delete</a></td>
+                        <td class="action"><a href="#" th:href="@{/book/edit(id=*{id})}">edit</a></td>
+                        <td class="action"><a href="#" th:href="@{/book/delete(id=*{id})}" th:method="delete">delete</a></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="container-action">
-            <a href="#" th:href="@{/add/book}">add book</a>
+            <a href="#" th:href="@{/book/add}">add book</a>
         </div>
     </body>
 </html>

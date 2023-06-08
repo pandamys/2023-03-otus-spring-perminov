@@ -10,7 +10,7 @@
     <h1>Edit book</h1>
 </div>
 <div class="container-data">
-    <form id="edit-book" action="book-edit.html" th:method="post" th:action="@{/edit/book(id=*{id})}" th:object="${book}">
+    <form id="edit-book" action="book-edit.html" th:method="post" th:action="@{/book/edit(id=*{id})}" th:object="${book}">
         <div class="field-group">
             <label for="id-input">ID:</label>
             <input id="id-input" type="text" readonly="readonly" value="1" th:value="*{id}"/>

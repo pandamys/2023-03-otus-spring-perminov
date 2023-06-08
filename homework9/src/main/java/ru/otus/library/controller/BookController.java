@@ -54,7 +54,7 @@ public class BookController {
         return "books";
     }
 
-    @GetMapping("edit/book")
+    @GetMapping("book/edit")
     public String editBook(@RequestParam("id") Long id, Model model) {
         Book book = bookService.getBookById(id);
         model.addAttribute("book", book);
@@ -62,26 +62,26 @@ public class BookController {
         return "book-edit";
     }
 
-    @PostMapping("/edit/book")
+    @PostMapping("book/edit")
     public String editBook(BookNewAndChangeDto book){
         bookService.updateBook(book.getId(), book.getName(), book.getAuthorId(), book.getGenreId());
         return "redirect:/";
     }
 
-    @GetMapping("view/book")
+    @GetMapping("book/view")
     public String viewBook(@RequestParam("id") Long id, Model model) {
         Book book = bookService.getBookById(id);
         model.addAttribute("book", book);
         return "book-view";
     }
 
-    @GetMapping("add/book")
+    @GetMapping("book/add")
     public String addBook(BookNewAndChangeDto bookNewAndChangeDto, Model model) {
         getDataForModel(model);
         return "book-add";
     }
 
-    @PostMapping("add/book")
+    @PostMapping("book/add")
     public String addBook(@ModelAttribute("book") BookNewAndChangeDto bookNewAndChangeDto,
                           BindingResult bindingResult,
                           Model model) {
@@ -92,7 +92,7 @@ public class BookController {
         return "redirect:/books";
     }
 
-    @GetMapping("delete/book")
+    @GetMapping("book/delete")
     public String deleteBook(@RequestParam("id") Long id) {
         bookService.removeBook(id);
         return "redirect:/books";
