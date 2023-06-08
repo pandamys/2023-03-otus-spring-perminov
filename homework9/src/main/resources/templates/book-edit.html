@@ -16,6 +16,10 @@
             <input id="id-input" type="text" readonly="readonly" value="1" th:value="*{id}"/>
         </div>
         <div class="field-group">
+            <label for="name-input">Name:</label>
+            <input id="name-input" name="name" type="text" value="Test" th:value="*{name}"/>
+        </div>
+        <div class="field-group">
             <label for="author-input">Author:</label>
             <select id="author-input" name="authorId">
                 <option value="0"></option>
