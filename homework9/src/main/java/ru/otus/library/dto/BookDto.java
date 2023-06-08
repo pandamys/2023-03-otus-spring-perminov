@@ -65,12 +65,4 @@ public class BookDto {
     public void setComments(List<CommentBook> comments) {
         this.comments = comments;
     }
-
-    public static Book toDomainObject(BookDto bookDto){
-        return new Book(bookDto);
-    }
-
-    public static BookDto toDto(Book book){
-        return new BookDto(book);
-    }
 }

@@ -12,11 +12,11 @@ import ru.otus.library.domain.Author;
 import ru.otus.library.domain.Book;
 import ru.otus.library.domain.Genre;
 import ru.otus.library.dto.BookDto;
+import ru.otus.library.dto.BookDtoMapper;
 import ru.otus.library.dto.BookNewAndChangeDto;
 import ru.otus.library.service.AuthorService;
 import ru.otus.library.service.BookService;
 import ru.otus.library.service.GenreService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,7 +48,7 @@ public class BookController {
         List<BookDto> books = new ArrayList<>();
         books = bookService.getAllBooks()
                 .stream()
-                .map(BookDto::toDto)
+                .map(BookDtoMapper::toDto)
                 .collect(Collectors.toList());
         model.addAttribute("books", books);
         return "books";
@@ -85,8 +85,10 @@ public class BookController {
     public String addBook(@ModelAttribute("book") BookNewAndChangeDto bookNewAndChangeDto,
                           BindingResult bindingResult,
                           Model model) {
-        System.err.println(bookNewAndChangeDto.getName());
-        bookService.addBook(bookNewAndChangeDto.getName(), bookNewAndChangeDto.getAuthorId(), bookNewAndChangeDto.getGenreId());
+        bookService.addBook(
+                bookNewAndChangeDto.getName(),
+                bookNewAndChangeDto.getAuthorId(),
+                bookNewAndChangeDto.getGenreId());
         return "redirect:/books";
     }
 
