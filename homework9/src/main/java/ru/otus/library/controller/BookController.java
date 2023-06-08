@@ -40,10 +40,10 @@ public class BookController {
 
     @GetMapping("/")
     public String mainPage(){
-        return "redirect:/books";
+        return "redirect:/book";
     }
 
-    @GetMapping("/books")
+    @GetMapping("/book")
     public String getAllBooks(Model model) {
         List<BookDto> books = new ArrayList<>();
         books = bookService.getAllBooks()
@@ -89,13 +89,13 @@ public class BookController {
                 bookNewAndChangeDto.getName(),
                 bookNewAndChangeDto.getAuthorId(),
                 bookNewAndChangeDto.getGenreId());
-        return "redirect:/books";
+        return "redirect:/book";
     }
 
     @GetMapping("book/delete")
     public String deleteBook(@RequestParam("id") Long id) {
         bookService.removeBook(id);
-        return "redirect:/books";
+        return "redirect:/book";
     }
 
     private void getDataForModel(Model model){

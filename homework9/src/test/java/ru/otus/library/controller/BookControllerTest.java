@@ -11,16 +11,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.library.domain.Author;
 import ru.otus.library.domain.Book;
 import ru.otus.library.domain.Genre;
-import ru.otus.library.dto.BookDto;
 import ru.otus.library.dto.BookDtoMapper;
-import ru.otus.library.dto.BookNewAndChangeDto;
 import ru.otus.library.service.AuthorService;
 import ru.otus.library.service.BookService;
 import ru.otus.library.service.GenreService;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -49,7 +45,7 @@ public class BookControllerTest {
     public void testAllBooks() throws Exception {
         List<Book> books = getTestBooks();
         Mockito.when(bookService.getAllBooks()).thenReturn(books);
-        String content = mvcMock.perform(get("/books"))
+        String content = mvcMock.perform(get("/book"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("books"))
                 .andReturn().getResponse().getContentAsString();
@@ -89,7 +85,7 @@ public class BookControllerTest {
                 .param("authorId", String.valueOf(authorId))
                 .param("genreId", String.valueOf(genreId)))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/books"));
+                .andExpect(view().name("redirect:/book"));
     }
 
     @Test
@@ -102,7 +98,7 @@ public class BookControllerTest {
         mvcMock.perform(get("/book/delete")
                 .param("id", String.valueOf(id)))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/books"));
+                .andExpect(view().name("redirect:/book"));
     }
 
     private List<Book> getTestBooks(){
