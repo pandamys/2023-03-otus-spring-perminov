@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:librarydb
+  sql:
+    init:
+      mode: always
+
+  jpa:
+      generate-ddl: true
+      hibernate:
+        ddl-auto: create
+      properties:
+        hibernate:
+          format_sql: false
+      show-sql: false
+      defer-datasource-initialization: true
