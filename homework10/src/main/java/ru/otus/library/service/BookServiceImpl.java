@@ -60,7 +60,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public boolean addBook(String name,
+    public Book addBook(String name,
                            Long authorId,
                            Long genreId) {
         Book book;
@@ -70,16 +70,16 @@ public class BookServiceImpl implements BookService {
         author = authorsRepository.findById(authorId);
         genre = genreRepository.findById(genreId);
         if (author.isEmpty() || genre.isEmpty()) {
-            return false;
+            return null;
         } else {
             book = new Book(name, author.get(), genre.get());
-            booksRepository.save(book);
-            return true;
+            book = booksRepository.save(book);
+            return book;
         }
     }
 
     @Override
-    public void updateBook(long id, String name, long authorId, long genreId) {
+    public Book updateBook(long id, String name, long authorId, long genreId) {
         Optional<Book> bookOptional;
         Book book;
         Optional<Author> author;
@@ -99,9 +99,11 @@ public class BookServiceImpl implements BookService {
                 genre = genreRepository.findById(genreId);
                 genre.ifPresent(book::setGenre);
             }
-            booksRepository.save(book);
+            book = booksRepository.save(book);
+        } else {
+            book = null;
         }
-
+        return book;
     }
 
     @Override

@@ -25,6 +25,7 @@
         <minimal.maven.version>3.3.9</minimal.maven.version>
         <sprint.shell.version>3.0.1</sprint.shell.version>
         <h2.version>2.1.212</h2.version>
+        <jquery.version>3.6.4</jquery.version>
     </properties>
 
 
@@ -59,6 +60,12 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>${h2.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>${jquery.version}</version>
         </dependency>
     </dependencies>
 

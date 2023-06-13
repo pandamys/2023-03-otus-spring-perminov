@@ -13,6 +13,13 @@ public class BookNewAndChangeDto {
 
     }
 
+    public BookNewAndChangeDto(Long id, String name, Long authorId, Long genreId){
+        this.id = id;
+        this.name = name;
+        this.authorId = authorId;
+        this.genreId = genreId;
+    }
+
     public BookNewAndChangeDto(String name, Long authorId, Long genreId){
         this.name = name;
         this.authorId = authorId;

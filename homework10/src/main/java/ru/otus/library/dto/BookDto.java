@@ -4,8 +4,10 @@ import ru.otus.library.domain.Author;
 import ru.otus.library.domain.Book;
 import ru.otus.library.domain.CommentBook;
 import ru.otus.library.domain.Genre;
+import ru.otus.library.dto.mapper.CommentBookDtoMapper;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BookDto {
     private long id;
@@ -16,14 +18,18 @@ public class BookDto {
 
     private Genre genre;
 
-    private List<CommentBook> comments;
+    private List<CommentBookDto> comments;
+
+    public BookDto(){}
 
     public BookDto(Book book){
         this.id = book.getId();
         this.name = book.getName();
         this.author = book.getAuthor();
         this.genre = book.getGenre();
-        this.comments = book.getComments();
+        if (book.getComments() != null){
+            this.comments = book.getComments().stream().map(CommentBookDtoMapper::toDto).collect(Collectors.toList());
+        }
     }
 
     public long getId() {
@@ -58,11 +64,11 @@ public class BookDto {
         this.genre = genre;
     }
 
-    public List<CommentBook> getComments() {
+    public List<CommentBookDto> getComments() {
         return comments;
     }
 
-    public void setComments(List<CommentBook> comments) {
+    public void setComments(List<CommentBookDto> comments) {
         this.comments = comments;
     }
 }

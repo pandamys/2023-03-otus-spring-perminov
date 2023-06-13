@@ -66,7 +66,6 @@ public class Book {
         this.name = bookDto.getName();
         this.author = bookDto.getAuthor();
         this.genre = bookDto.getGenre();
-        this.comments = bookDto.getComments();
     }
 
     public long getId() {

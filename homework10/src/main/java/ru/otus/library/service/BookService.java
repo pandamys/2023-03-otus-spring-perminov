@@ -10,9 +10,9 @@ public interface BookService {
 
     List<Book> getAllBooks();
 
-    boolean addBook(String name, Long author, Long genre);
+    Book addBook(String name, Long author, Long genre);
 
-    void updateBook(long id, String name, long author, long genre);
+    Book updateBook(long id, String name, long author, long genre);
 
     boolean removeBook(long id);
 }
