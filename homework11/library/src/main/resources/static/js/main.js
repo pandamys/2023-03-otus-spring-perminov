@@ -17,6 +17,8 @@ function fillTable(nameTable, data){
     let table = $("." + nameTable);
     if (table.length){
         data.forEach(book => {
+            author =
+
             tr = $("<tr/>");
             tr.append($("<td/>").addClass("id-item").append(book.id))
               .append($("<td/>").append($('<a href="#">').addClass("view-item").text(book.name)))
@@ -37,7 +39,7 @@ function addViewAction(){
     let viewElement = $(".view-item");
     viewElement.on("click", function(e){
         element = $(e.target);
-        id = Number(element.parents("tr").find(".id-item").text());
+        id = element.parents("tr").find(".id-item").text();
         fetch("/api/book/" + id)
             .then(response => response.json())
             .then(json => {infoAboutBook(json)});
@@ -56,7 +58,8 @@ function addEditAction(){
     let editElement = $(".edit-item");
     editElement.on("click", function(e){
         element = $(e.target);
-        id = Number(element.parents("tr").find(".id-item").text());
+        id = element.parents("tr").find(".id-item").text();
+        console.log("ID: " + id);
         fetch("/api/book/" + id)
             .then(response => response.json())
             .then(json => {formBook("edit", json)});
@@ -67,7 +70,7 @@ function addDeleteAction(){
     let delElement = $(".delete-item");
     delElement.on("click", function(e){
         element = $(e.target);
-        id = Number(element.parents("tr").find(".id-item").text());
+        id = element.parents("tr").find(".id-item").text();
         fetch("/api/book/" + id, {method: "delete"}).then(() => window.location.reload());
     });
 }
@@ -81,7 +84,7 @@ function infoAboutBook(data){
         list.append($("<li>").append("Name: " + data.name))
             .append($("<li>").append("Author: " + data.author.name + " " + data.author.surname))
             .append($("<li>").append("Genre: " + data.genre.name))
-        if (data.comments.length){
+        if (data.comments != null && data.comments.length){
             listComments = $("<ul>").append("Comments");
             data.comments.forEach(comment => {
                 listComments.append($("<li>").append(comment.text));

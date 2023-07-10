@@ -10,7 +10,7 @@ public class Genre {
 
     private String name;
 
-    public Genre(){
+    public Genre() {
 
     }
 
@@ -31,7 +31,7 @@ public class Genre {
         return name;
     }
 
-    public String getInfo(){
+    public String getInfo() {
         return String.format("[id=%s][Genre=%s]", id, name);
     }
 }

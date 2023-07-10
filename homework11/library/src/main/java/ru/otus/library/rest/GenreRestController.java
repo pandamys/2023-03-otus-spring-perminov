@@ -3,21 +3,21 @@ package ru.otus.library.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 import ru.otus.library.domain.Genre;
-import ru.otus.library.service.GenreService;
-import java.util.List;
+import ru.otus.library.repository.GenreRepository;
 
 @RestController
 public class GenreRestController {
-    private GenreService genreService;
+    private GenreRepository genreRepository;
 
-    public GenreRestController(@Autowired GenreService genreService){
-        this.genreService = genreService;
+    public GenreRestController(@Autowired GenreRepository genreRepository) {
+        this.genreRepository = genreRepository;
     }
 
     @GetMapping("/api/genre")
-    public List<Genre> getGenres(){
-        List<Genre> genres = genreService.getAll();
+    public Flux<Genre> getGenres() {
+        Flux<Genre> genres = genreRepository.findAll();
         return genres;
     }
 }

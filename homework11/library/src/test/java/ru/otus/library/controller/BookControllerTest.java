@@ -17,20 +17,14 @@ import ru.otus.library.dto.BookDto;
 import ru.otus.library.dto.BookNewAndChangeDto;
 import ru.otus.library.dto.mapper.BookDtoMapper;
 import ru.otus.library.rest.BookRestController;
-import ru.otus.library.service.AuthorService;
-import ru.otus.library.service.BookService;
-import ru.otus.library.service.GenreService;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @WebMvcTest(BookRestController.class)
 public class BookControllerTest {
@@ -39,15 +33,6 @@ public class BookControllerTest {
 
     @Autowired
     private MockMvc mvcMock;
-
-    @MockBean
-    private BookService bookService;
-
-    @MockBean
-    private AuthorService authorService;
-
-    @MockBean
-    private GenreService genreService;
 
     @MockBean
     BookDtoMapper bookDtoMapperMock;

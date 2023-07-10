@@ -1,11 +1,10 @@
 package ru.otus.library.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import reactor.core.publisher.Flux;
 import ru.otus.library.domain.Book;
 import ru.otus.library.domain.CommentBook;
 
-import java.util.List;
-
-public interface CommentsBookRepository extends JpaRepository<CommentBook, Long> {
-    List<CommentBook> findByBook(Book book);
+public interface CommentsBookRepository extends ReactiveMongoRepository<CommentBook, Long> {
+    Flux<CommentBook> findByBook(Book book);
 }

@@ -12,13 +12,17 @@ public class CommentBook {
 
     private Book book;
 
-    public CommentBook(){
+    public CommentBook() {
 
     }
 
     public CommentBook(String text, Book book) {
         this.text = text;
         this.book = book;
+    }
+
+    public CommentBook(String id) {
+        this.id = id;
     }
 
     public String getId() {
@@ -45,7 +49,7 @@ public class CommentBook {
         this.book = book;
     }
 
-    public void printComment(){
+    public void printComment() {
         System.out.printf("[id: %s][Text: %s][Book: %s]\n", id, text, book.getName());
     }
 }

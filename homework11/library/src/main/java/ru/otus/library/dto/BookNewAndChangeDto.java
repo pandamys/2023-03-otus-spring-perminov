@@ -1,36 +1,36 @@
 package ru.otus.library.dto;
 
 public class BookNewAndChangeDto {
-    private Long id;
+    private String id;
 
     private String name;
 
-    private Long authorId;
+    private String authorId;
 
-    private Long genreId;
+    private String genreId;
 
-    public BookNewAndChangeDto(){
+    public BookNewAndChangeDto() {
 
     }
 
-    public BookNewAndChangeDto(Long id, String name, Long authorId, Long genreId){
+    public BookNewAndChangeDto(String id, String name, String authorId, String genreId) {
         this.id = id;
         this.name = name;
         this.authorId = authorId;
         this.genreId = genreId;
     }
 
-    public BookNewAndChangeDto(String name, Long authorId, Long genreId){
+    public BookNewAndChangeDto(String name, String authorId, String genreId) {
         this.name = name;
         this.authorId = authorId;
         this.genreId = genreId;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -38,11 +38,11 @@ public class BookNewAndChangeDto {
         return name;
     }
 
-    public Long getAuthorId() {
+    public String getAuthorId() {
         return authorId;
     }
 
-    public Long getGenreId() {
+    public String getGenreId() {
         return genreId;
     }
 
@@ -50,11 +50,11 @@ public class BookNewAndChangeDto {
         this.name = name;
     }
 
-    public void setAuthorId(Long authorId) {
+    public void setAuthorId(String authorId) {
         this.authorId = authorId;
     }
 
-    public void setGenreId(Long genreId) {
+    public void setGenreId(String genreId) {
         this.genreId = genreId;
     }
 }

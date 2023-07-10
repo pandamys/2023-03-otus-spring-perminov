@@ -12,12 +12,12 @@ public class Author {
 
     private String surname;
 
-    public Author(){
+    public Author() {
 
     }
 
     public Author(String name,
-                  String surname){
+                  String surname) {
         this.name = name;
         this.surname = surname;
     }
@@ -50,11 +50,11 @@ public class Author {
         this.surname = surname;
     }
 
-    public String getFullName(){
+    public String getFullName() {
         return name + " " + surname;
     }
 
-    public String getInfo(){
+    public String getInfo() {
         return String.format("[id=%s][Name=%s][Surname=%s]", id, name, surname);
     }
 }

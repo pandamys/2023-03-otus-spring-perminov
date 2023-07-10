@@ -1,21 +1,23 @@
 package ru.otus.library.dto;
 
 public class CommentBookDto {
-    private Long id;
-    private String text;
-    private Long bookId;
+    private String id;
 
-    public CommentBookDto(Long id, String text, Long bookId) {
+    private String text;
+
+    private String bookId;
+
+    public CommentBookDto(String id, String text, String bookId) {
         this.id = id;
         this.text = text;
         this.bookId = bookId;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
