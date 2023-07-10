@@ -1,0 +1,25 @@
+.table-books {
+    border: 1px solid;
+    border-collapse: collapse;
+    width: 50%;
+}
+
+th {
+    border: 1px solid;
+}
+
+td {
+    border: 1px solid;
+}
+
+.action {
+    text-align: center;
+}
+
+.edit-item {
+    text-align: center;
+}
+
+.delete-item {
+    text-align: center;
+}
