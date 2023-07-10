@@ -1,14 +1,8 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:librarydb
-  sql:
-    init:
-      mode: always
-      data-locations: data.sql
-
-  jpa:
-      generate-ddl: true
-      hibernate:
-        ddl-auto: create
-
-      defer-datasource-initialization: true
+  data:
+    mongodb:
+      database: library_test
+      port: 27017
+  mongodb:
+      embedded:
+        version: 5.0.0

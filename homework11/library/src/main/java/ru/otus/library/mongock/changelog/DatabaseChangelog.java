@@ -2,6 +2,8 @@ package ru.otus.library.mongock.changelog;
 
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
+
+import com.mongodb.client.MongoDatabase;
 import ru.otus.library.domain.Author;
 import ru.otus.library.domain.Book;
 import ru.otus.library.domain.CommentBook;
@@ -30,6 +32,11 @@ public class DatabaseChangelog {
     private Genre fantasy;
 
     private CommentBook tempCommentBook;
+
+    @ChangeSet(order = "001", id = "dropDb", author = "perminovva", runAlways = true)
+    public void dropDb(MongoDatabase db) {
+        db.drop();
+    }
 
     @ChangeSet(order = "002", id = "insertAuthors", author = "perminovva")
     public void insertAuthors(AuthorsRepository authorsRepository) {

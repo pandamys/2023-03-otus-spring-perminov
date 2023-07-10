@@ -13,3 +13,4 @@ mongock:
     write-concern:
       journal: false
     read-concern: local
+    debug: true
