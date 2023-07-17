@@ -6,6 +6,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.library.domain.Author;
@@ -18,6 +19,7 @@ import ru.otus.library.service.GenreService;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -25,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(BookController.class)
 public class BookControllerTest {
+
     @Autowired
     private MockMvc mvcMock;
 
@@ -41,6 +44,7 @@ public class BookControllerTest {
     BookDtoMapper bookDtoMapperMock;
 
     @Test
+    @WithMockUser
     @DisplayName("Получение списка книг")
     public void testAllBooks() throws Exception {
         List<Book> books = getTestBooks();
@@ -55,6 +59,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("Получение конкретной книги")
     public void testGetBook() throws Exception {
         Book book = getTestBooks().get(0);
@@ -71,6 +76,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("Отправка данных для создания книги")
     public void testCreateBook() throws Exception {
         String nameNewBook = "Test new book";
@@ -83,12 +89,13 @@ public class BookControllerTest {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("name", nameNewBook)
                 .param("authorId", String.valueOf(authorId))
-                .param("genreId", String.valueOf(genreId)))
+                .param("genreId", String.valueOf(genreId)).with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/book"));
     }
 
     @Test
+    @WithMockUser
     @DisplayName("Отправка данных для удаления книги")
     public void testDeleteBook() throws Exception {
         Long id = 2L;
@@ -99,6 +106,14 @@ public class BookControllerTest {
                 .param("id", String.valueOf(id)))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/book"));
+    }
+
+    @Test
+    @DisplayName("Проверка, что без аутентификации данные не приходят")
+    public void testWithoutAuth() throws Exception {
+        mvcMock.perform(get("/book"))
+                .andExpect(status().isUnauthorized())
+                .andReturn();
     }
 
     private List<Book> getTestBooks(){

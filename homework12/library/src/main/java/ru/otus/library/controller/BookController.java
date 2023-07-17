@@ -17,7 +17,6 @@ import ru.otus.library.dto.BookNewAndChangeDto;
 import ru.otus.library.service.AuthorService;
 import ru.otus.library.service.BookService;
 import ru.otus.library.service.GenreService;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
