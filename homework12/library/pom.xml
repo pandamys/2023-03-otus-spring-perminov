@@ -25,6 +25,7 @@
         <minimal.maven.version>3.3.9</minimal.maven.version>
         <sprint.shell.version>3.0.1</sprint.shell.version>
         <h2.version>2.1.212</h2.version>
+        <lombok.version>1.18.28</lombok.version>
     </properties>
 
 
@@ -46,6 +47,11 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
@@ -60,6 +66,14 @@
             <artifactId>h2</artifactId>
             <version>${h2.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
