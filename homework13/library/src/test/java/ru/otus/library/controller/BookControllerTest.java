@@ -6,6 +6,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,9 +26,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @WebMvcTest(BookController.class)
 public class BookControllerTest {
-
     @Autowired
     private MockMvc mvcMock;
 
@@ -95,8 +96,8 @@ public class BookControllerTest {
     }
 
     @Test
-    @WithMockUser
-    @DisplayName("Отправка данных для удаления книги")
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("Отправка данных для удаления книги админом")
     public void testDeleteBook() throws Exception {
         Long id = 2L;
 
@@ -106,6 +107,19 @@ public class BookControllerTest {
                 .param("id", String.valueOf(id)))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/book"));
+    }
+
+    @Test
+    @WithMockUser(username = "test_user", roles = "USER")
+    @DisplayName("Проверка, что без роли АДМИН удалить нельзя")
+    public void testDeleteBookWithoutAuthorize() throws Exception {
+        Long id = 2L;
+
+        Mockito.when(bookService.removeBook(id)).thenReturn(true);
+
+        mvcMock.perform(get("/book/delete")
+                        .param("id", String.valueOf(id)))
+                .andExpect(status().is(403));
     }
 
     @Test

@@ -108,7 +108,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public boolean removeBook(long id) {
         Book book;
         book = getBookById(id);
