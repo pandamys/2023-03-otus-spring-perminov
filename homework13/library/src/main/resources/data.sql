@@ -17,5 +17,10 @@ insert into comments (`text`, `book_id`) values ('Cool book', 1);
 insert into comments (`text`, `book_id`) values ('Interesting book', 1);
 insert into comments (`text`, `book_id`) values ('Bad book', 2);
 
+insert into roles (`role_name`) values ('ROLE_USER');
+insert into roles (`role_name`) values ('ROLE_ADMIN');
+
 insert into users (`username`, `password`) values ('user1', 'passwd');
 insert into users (`username`, `password`) values ('admin', '123');
+
+insert into users_roles (`user_id`, `roles_id`) values (1, 1), (2, 2);

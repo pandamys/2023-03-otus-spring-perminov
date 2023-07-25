@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.library.domain.User;
 import ru.otus.library.repository.UsersRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,14 +22,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user;
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user = usersRepository
                 .findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " not found"));
-        List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("user"));
+        user.getRoles()
+                .forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getRoleName())));
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
                 authorities);
     }
+
+
 }

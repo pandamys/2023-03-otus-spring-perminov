@@ -1,5 +1,6 @@
 package ru.otus.library.service;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.library.domain.Author;
@@ -60,6 +61,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public boolean addBook(String name,
                            Long authorId,
                            Long genreId) {
@@ -79,6 +81,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public void updateBook(long id, String name, long authorId, long genreId) {
         Optional<Book> bookOptional;
         Book book;
@@ -105,6 +108,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public boolean removeBook(long id) {
         Book book;
         book = getBookById(id);
