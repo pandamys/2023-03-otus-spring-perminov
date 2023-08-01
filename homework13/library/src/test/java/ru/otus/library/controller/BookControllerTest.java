@@ -6,7 +6,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -14,6 +15,7 @@ import ru.otus.library.domain.Author;
 import ru.otus.library.domain.Book;
 import ru.otus.library.domain.Genre;
 import ru.otus.library.dto.BookDtoMapper;
+import ru.otus.library.security.SecurityConfiguration;
 import ru.otus.library.service.AuthorService;
 import ru.otus.library.service.BookService;
 import ru.otus.library.service.GenreService;
@@ -21,13 +23,16 @@ import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-@WebMvcTest(BookController.class)
+@EnableMethodSecurity
+@Import(SecurityConfiguration.class)
+@WebMvcTest(controllers = BookController.class)
 public class BookControllerTest {
     @Autowired
     private MockMvc mvcMock;
@@ -77,7 +82,7 @@ public class BookControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Отправка данных для создания книги")
     public void testCreateBook() throws Exception {
         String nameNewBook = "Test new book";
@@ -105,12 +110,13 @@ public class BookControllerTest {
 
         mvcMock.perform(get("/book/delete")
                 .param("id", String.valueOf(id)))
+                .andExpect(authenticated().withRoles("ADMIN"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/book"));
     }
 
     @Test
-    @WithMockUser(username = "test_user", roles = "USER")
+    @WithMockUser(value = "test_user", roles = "USER")
     @DisplayName("Проверка, что без роли АДМИН удалить нельзя")
     public void testDeleteBookWithoutAuthorize() throws Exception {
         Long id = 2L;
@@ -119,6 +125,7 @@ public class BookControllerTest {
 
         mvcMock.perform(get("/book/delete")
                         .param("id", String.valueOf(id)))
+                .andExpect(authenticated().withRoles("USER"))
                 .andExpect(status().is(403));
     }
 
@@ -126,8 +133,8 @@ public class BookControllerTest {
     @DisplayName("Проверка, что без аутентификации данные не приходят")
     public void testWithoutAuth() throws Exception {
         mvcMock.perform(get("/book"))
-                .andExpect(status().isUnauthorized())
-                .andReturn();
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
     }
 
     private List<Book> getTestBooks(){
