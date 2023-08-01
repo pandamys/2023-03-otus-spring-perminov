@@ -19,6 +19,8 @@ public class SecurityConfiguration {
                 .sessionManagement(Customizer.withDefaults())
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/book/add", "/book/edit", "/book/delete").hasRole("ADMIN")
+                        .requestMatchers("/book/**").hasAnyRole("ADMIN","USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(Customizer.withDefaults());
