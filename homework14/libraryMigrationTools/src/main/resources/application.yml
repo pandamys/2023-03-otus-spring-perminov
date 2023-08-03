@@ -1,13 +1,16 @@
 spring:
-  batch:
-    job:
-      enabled: false
+  jdbc:
+    initialize-schema: always
+  job:
+    enabled: false
 
   datasource:
     url: jdbc:h2:mem:librarydb
+    driverClassName: org.h2.Driver
   sql:
     init:
       mode: always
+
   jpa:
       generate-ddl: true
       hibernate:
@@ -20,13 +23,17 @@ spring:
 
   data:
     mongodb:
-      database: library
       host: localhost
       port: 27017
+      database: library
   main:
     allow-circular-references: true
-  mongodb:
-    embedded:
-      version: 3.4.0
 
+  logging:
+    level: debug
 
+  shell:
+    interactive:
+      enabled: true
+    noninteractive:
+      enabled: false

@@ -21,17 +21,18 @@ public class EntityMapper {
     private MongoTemplate mongoTemplate;
 
     public AuthorDoc toAuthorDocument(Author author){
-        return new AuthorDoc(author.getName(), author.getSurname());
+        return new AuthorDoc(author.getName(), author.getSurname(), author.getId());
     }
 
     public GenreDoc toGenreDocument(Genre genre){
-        return new GenreDoc(genre.getName());
+        return new GenreDoc(genre.getName(), genre.getId());
     }
 
     public BookDoc toBookDocument(Book book){
         return new BookDoc(book.getName(),
                 findAuthorByPreviousId(book.getAuthor()),
-                findGenreByPreviousId(book.getGenre()));
+                findGenreByPreviousId(book.getGenre()),
+                book.getId());
     }
 
     public CommentBookDoc toCommentBook(CommentBook commentBook){

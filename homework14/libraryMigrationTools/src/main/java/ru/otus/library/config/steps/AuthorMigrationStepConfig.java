@@ -13,6 +13,7 @@ import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.transaction.PlatformTransactionManager;
 import ru.otus.library.domain.document.AuthorDoc;
 import ru.otus.library.domain.entity.Author;
 import ru.otus.library.dto.EntityMapper;
@@ -24,6 +25,7 @@ public class AuthorMigrationStepConfig {
     private final EntityManagerFactory managerFactory;
     private final MongoTemplate mongoTemplate;
     private final EntityMapper mapper;
+    private final PlatformTransactionManager transactionManager;
 
     @StepScope
     @Bean
@@ -56,7 +58,7 @@ public class AuthorMigrationStepConfig {
                                     MongoItemWriter<AuthorDoc> authorWriter,
                                     JobRepository jobRepository) {
         return new StepBuilder("authorMigrate", jobRepository)
-                .<Author, AuthorDoc>chunk(3)
+                .<Author, AuthorDoc>chunk(3, transactionManager)
                 .reader(authorReader)
                 .processor(authorProcessor)
                 .writer(authorWriter)

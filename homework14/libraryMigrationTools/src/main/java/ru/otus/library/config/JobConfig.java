@@ -13,7 +13,9 @@ import org.springframework.batch.core.step.tasklet.TaskletStep;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import ru.otus.library.domain.document.AuthorDoc;
@@ -24,27 +26,18 @@ import ru.otus.library.domain.document.GenreDoc;
 public class JobConfig {
 
     private final MongoTemplate mongoTemplate;
-
-    @Bean
-    public TaskletStep dropMongoDBStep(JobRepository jobRepository) {
-        return new StepBuilder("dropMongoDB", jobRepository)
-                .tasklet((stepContribution, chunkContext) -> {
-                    mongoTemplate.getDb().drop();
-                    return RepeatStatus.FINISHED;
-                })
-                .build();
-    }
+    private final MongoTransactionManager mongoTransactionManager;
 
     @Bean
     public TaskletStep dropPreviousIdsStep(JobRepository jobRepository) {
         return new StepBuilder("dropPreviousIds", jobRepository)
                 .tasklet((stepContribution, chunkContext) -> {
-                    var query = new Query();
+                    var query = new Query(Criteria.where("previousId").gt(0));
                     var update = new Update().unset("previousId");
-                    mongoTemplate.findAndModify(query, update, GenreDoc.class);
-                    mongoTemplate.findAndModify(query, update, AuthorDoc.class);
+                    mongoTemplate.updateMulti(query, update, AuthorDoc.class);
+                    mongoTemplate.updateMulti(query, update, GenreDoc.class);
                     return RepeatStatus.FINISHED;
-                })
+                }).transactionManager(mongoTransactionManager)
                 .build();
     }
 
@@ -55,20 +48,10 @@ public class JobConfig {
                                  JobRepository jobRepository) {
         return new JobBuilder("migrateToMongo", jobRepository)
                 .incrementer(new RunIdIncrementer())
-                .start(dropMongoDBStep(jobRepository))
-                .next(authorMigrationStep)
+                .start(authorMigrationStep)
                 .next(genreMigrationStep)
                 .next(bookMigrationStep)
                 .next(dropPreviousIdsStep(jobRepository))
-                .listener(new JobExecutionListener() {
-                    @Override
-                    public void beforeJob(JobExecution jobExecution) {
-                    }
-
-                    @Override
-                    public void afterJob(JobExecution jobExecution) {
-                    }
-                })
                 .build();
     }
 }

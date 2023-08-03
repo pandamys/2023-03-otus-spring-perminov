@@ -25,12 +25,22 @@ public class GenreDoc {
         this.name = name;
     }
 
+    public GenreDoc(String name, Long previousId) {
+        this.id = id;
+        this.name = name;
+        this.previousId = previousId;
+    }
+
     public String getId() {
         return id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public void setPreviousId(Long previousId) {
+        this.previousId = previousId;
     }
 
     public String getInfo() {

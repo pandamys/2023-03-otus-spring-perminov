@@ -32,6 +32,14 @@ public class AuthorDoc {
         this.surname = surname;
     }
 
+    public AuthorDoc(String name,
+                     String surname,
+                     Long previousId) {
+        this.name = name;
+        this.surname = surname;
+        this.previousId = previousId;
+    }
+
     public String getId() {
         return id;
     }
@@ -50,6 +58,10 @@ public class AuthorDoc {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public void setPreviousId(Long previousId) {
+        this.previousId = previousId;
     }
 
     public String getFullName() {

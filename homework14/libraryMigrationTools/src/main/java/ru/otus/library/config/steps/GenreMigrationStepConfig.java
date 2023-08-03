@@ -13,6 +13,7 @@ import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilde
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.transaction.PlatformTransactionManager;
 import ru.otus.library.domain.document.GenreDoc;
 import ru.otus.library.domain.entity.Genre;
 import jakarta.persistence.EntityManagerFactory;
@@ -24,6 +25,7 @@ public class GenreMigrationStepConfig {
     private final EntityManagerFactory managerFactory;
     private final MongoTemplate mongoTemplate;
     private final EntityMapper mapper;
+    private final PlatformTransactionManager transactionManager;
 
     @StepScope
     @Bean
@@ -56,7 +58,7 @@ public class GenreMigrationStepConfig {
                                    MongoItemWriter<GenreDoc> genreWriter,
                                    JobRepository jobRepository) {
         return new StepBuilder("migrateGenre", jobRepository)
-                .<Genre, GenreDoc>chunk(3)
+                .<Genre, GenreDoc>chunk(3, transactionManager)
                 .reader(genreReader)
                 .processor(genreProcessor)
                 .writer(genreWriter)

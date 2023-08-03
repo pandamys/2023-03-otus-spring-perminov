@@ -35,6 +35,13 @@ public class BookDoc {
         this.genre = genre;
     }
 
+    public BookDoc(String name, AuthorDoc author, GenreDoc genre, Long previousId) {
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+        this.previousId = previousId;
+    }
+
     public BookDoc(String id, String name, AuthorDoc author, GenreDoc genre) {
         this.id = id;
         this.name = name;
