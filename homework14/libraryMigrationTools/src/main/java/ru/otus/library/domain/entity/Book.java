@@ -1,4 +1,4 @@
-package ru.otus.library.domain;
+package ru.otus.library.domain.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -14,7 +14,6 @@ import jakarta.persistence.CascadeType;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import ru.otus.library.dto.BookDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,14 +58,6 @@ public class Book {
         this.author = author;
         this.genre = genre;
         this.comments = new ArrayList<>();
-    }
-
-    public Book(BookDto bookDto) {
-        this.id = bookDto.getId();
-        this.name = bookDto.getName();
-        this.author = bookDto.getAuthor();
-        this.genre = bookDto.getGenre();
-        this.comments = bookDto.getComments();
     }
 
     public long getId() {

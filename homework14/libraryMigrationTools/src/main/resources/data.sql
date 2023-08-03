@@ -16,6 +16,3 @@ insert into books (`name`, `author_id`, `genre_id`) values ('Arial', 1, 1);
 insert into comments (`text`, `book_id`) values ('Cool book', 1);
 insert into comments (`text`, `book_id`) values ('Interesting book', 1);
 insert into comments (`text`, `book_id`) values ('Bad book', 2);
-
-insert into users (`username`, `password`) values ('user1', 'passwd');
-insert into users (`username`, `password`) values ('admin', '123');

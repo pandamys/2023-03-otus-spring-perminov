@@ -1,4 +1,4 @@
-package ru.otus.library.domain;
+package ru.otus.library.domain.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

@@ -1,10 +1,13 @@
 spring:
+  batch:
+    job:
+      enabled: false
+
   datasource:
     url: jdbc:h2:mem:librarydb
   sql:
     init:
       mode: always
-
   jpa:
       generate-ddl: true
       hibernate:
@@ -14,3 +17,16 @@ spring:
           format_sql: false
       show-sql: false
       defer-datasource-initialization: true
+
+  data:
+    mongodb:
+      database: library
+      host: localhost
+      port: 27017
+  main:
+    allow-circular-references: true
+  mongodb:
+    embedded:
+      version: 3.4.0
+
+
