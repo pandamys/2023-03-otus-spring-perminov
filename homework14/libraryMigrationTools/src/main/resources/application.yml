@@ -1,0 +1,39 @@
+spring:
+  jdbc:
+    initialize-schema: always
+  job:
+    enabled: false
+
+  datasource:
+    url: jdbc:h2:mem:librarydb
+    driverClassName: org.h2.Driver
+  sql:
+    init:
+      mode: always
+
+  jpa:
+      generate-ddl: true
+      hibernate:
+        ddl-auto: create
+      properties:
+        hibernate:
+          format_sql: false
+      show-sql: false
+      defer-datasource-initialization: true
+
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: library
+  main:
+    allow-circular-references: true
+
+  logging:
+    level: debug
+
+  shell:
+    interactive:
+      enabled: true
+    noninteractive:
+      enabled: false
