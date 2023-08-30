@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:librarydb
+  sql:
+    init:
+      mode: always
+
+  jpa:
+      generate-ddl: true
+      hibernate:
+        ddl-auto: create
+      properties:
+        hibernate:
+          format_sql: false
+      show-sql: false
+      defer-datasource-initialization: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: metrics,health,logfile
+
+  endpoint:
+    health:
+      show-components: always
+      show-details: always
+    logfile:
+      name: "library-app.log"
+      path: "./logs/"
+
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.web: DEBUG
+    org.springframework.web.filter.CommonsRequestLoggingFilter: ERROR
+  file:
+    name: "./logs/library-app.log"
