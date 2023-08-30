@@ -19,6 +19,16 @@ public class BookNewAndChangeDto {
         this.genreId = genreId;
     }
 
+    public BookNewAndChangeDto(long id,
+                               String name,
+                               long author,
+                               long genre) {
+        this.id = id;
+        this.name = name;
+        this.authorId = author;
+        this.genreId = genre;
+    }
+
     public Long getId() {
         return id;
     }

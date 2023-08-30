@@ -1,5 +1,6 @@
 package ru.otus.library.service;
 
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,43 +22,56 @@ public class BookServiceImpl implements BookService {
 
     private final GenreRepository genreRepository;
 
+    private CircuitBreakerFactory cbFactory;
 
     public BookServiceImpl(BooksRepository booksRepository,
                            AuthorsRepository authorsRepository,
-                           GenreRepository genreRepository) {
+                           GenreRepository genreRepository,
+                           CircuitBreakerFactory cbFactory) {
         this.booksRepository = booksRepository;
         this.authorsRepository = authorsRepository;
         this.genreRepository = genreRepository;
+        this.cbFactory = cbFactory;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Book getBookById(long id) {
-        Optional<Book> optionalBook;
-        Book book;
-        optionalBook = booksRepository.findById(id);
-        if (optionalBook.isPresent()) {
-            book = optionalBook.orElse(null);
-            book.getComments().size();
-            return book;
-        } else {
-            return null;
-        }
+        return cbFactory.create("bookById").run(
+                () -> {
+                    Optional<Book> optionalBook;
+                    Book book;
+                    optionalBook = booksRepository.findById(id);
+                    if (optionalBook.isPresent()) {
+                        book = optionalBook.orElse(null);
+                        book.getComments().size();
+                        return book;
+                    } else {
+                        return null;
+                    }
+                },
+                throwable -> fallbackUndefinedBook());
     }
 
     @Override
     @Transactional(readOnly = true)
     public Book getBookByName(String name) {
-        Book book;
-        book = booksRepository.findByName(name);
-        if (book != null) {
-            book.getComments().size();
-        }
-        return book;
+        return cbFactory.create("bookByName").run(
+                () -> {
+                    Book book;
+                    book = booksRepository.findByName(name);
+                    if (book != null) {
+                        book.getComments().size();
+                    }
+                    return book;
+                },
+                throwable -> fallbackUndefinedBook());
     }
 
     public List<Book> getAllBooks() {
-        return booksRepository.findAll();
+        return cbFactory.create("allBooks").run(
+                () -> booksRepository.findAll(),
+                throwable -> fallbackUndefinedBooksList());
     }
 
     @Override
@@ -118,5 +132,17 @@ public class BookServiceImpl implements BookService {
             booksRepository.delete(book);
             return true;
         }
+    }
+
+    private List<Book> fallbackUndefinedBooksList() {
+        return List.of(getEmptyBook());
+    }
+
+    private Book fallbackUndefinedBook() {
+        return getEmptyBook();
+    }
+
+    private Book getEmptyBook() {
+        return new Book(0L, "N/A", new Author("N/A", "N/A"), new Genre("N/A"));
     }
 }
