@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: library
+  datasource:
+      url: jdbc:postgresql://localhost:5432/library_db
+      username: postgres
+      password: postgres
+      driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      mode: always
+
+  jpa:
+      generate-ddl: true
+      hibernate:
+        ddl-auto: create
+      properties:
+        hibernate:
+          format_sql: false
+      show-sql: false
+      defer-datasource-initialization: true
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: metrics,health,logfile
+
+  endpoint:
+    health:
+      show-components: always
+      show-details: always
+    logfile:
+      name: "library-app.log"
+      path: "./logs/"
+
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.web: DEBUG
+    org.springframework.web.filter.CommonsRequestLoggingFilter: ERROR
+  file:
+    name: "./logs/library-app.log"
