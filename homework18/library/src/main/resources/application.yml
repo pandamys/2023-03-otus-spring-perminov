@@ -1,6 +1,11 @@
 spring:
+  application:
+    name: library
   datasource:
-    url: jdbc:h2:mem:librarydb
+      url: jdbc:postgresql://localhost:5432/library_db
+      username: postgres
+      password: postgres
+      driver-class-name: org.postgresql.Driver
   sql:
     init:
       mode: always
@@ -14,6 +19,9 @@ spring:
           format_sql: false
       show-sql: false
       defer-datasource-initialization: true
+
+server:
+  port: 8080
 
 management:
   endpoints:

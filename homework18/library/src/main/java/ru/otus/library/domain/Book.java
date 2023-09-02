@@ -39,7 +39,7 @@ public class Book {
 
     @Fetch(FetchMode.SELECT)
     @BatchSize(size = 5)
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "book")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "book")
     @Column(name = "comment_id")
     private List<CommentBook> comments;
 

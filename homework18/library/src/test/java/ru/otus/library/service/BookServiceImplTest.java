@@ -4,9 +4,12 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.mockito.internal.matchers.Any;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -33,8 +36,14 @@ public class BookServiceImplTest {
     @MockBean
     private GenreRepository genreRepositoryMock;
 
+    @MockBean
+    private CircuitBreaker cbFactory;
+
     @Autowired
     private BookService bookService;
+
+    @MockBean
+    private CircuitBreakerFactory circuitBreakerFactory;
 
     @Test
     @DisplayName("Test get book")
@@ -44,6 +53,8 @@ public class BookServiceImplTest {
 
         expectedBook = Optional.of(getTestBook());
         Mockito.when(booksRepositoryMock.findById(expectedBook.get().getId())).thenReturn(expectedBook);
+        Mockito.when(cbFactory.run(Mockito.any(), Mockito.any())).thenReturn(expectedBook.get());
+        Mockito.when(circuitBreakerFactory.create(Mockito.anyString())).thenReturn(cbFactory);
         actualBook = bookService.getBookById(expectedBook.get().getId());
 
         assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook.get());
@@ -58,6 +69,8 @@ public class BookServiceImplTest {
 
         expectedBook = Optional.of(getTestBook());
         Mockito.when(booksRepositoryMock.findById(expectedBook.get().getId())).thenReturn(expectedBook);
+        Mockito.when(circuitBreakerFactory.create(Mockito.anyString())).thenReturn(cbFactory);
+        Mockito.when(cbFactory.run(Mockito.any(), Mockito.any())).thenReturn(expectedBook.get());
         actualResult = bookService.removeBook(expectedBook.get().getId());
         assertEquals(actualResult, true);
     }

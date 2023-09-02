@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  library:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: perminovva/library
+    container_name: library
+    restart: always
+    privileged: true
+    depends_on:
+      - library-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://library-db:5432/library_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8080:8080"
+
+  library-db:
+    image: postgres:13.2
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: library_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
